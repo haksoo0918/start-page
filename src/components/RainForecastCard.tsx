@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { WeatherData, getWeatherInfo } from '../services/weatherService';
 import { Region } from '../data/koreaRegions';
 import { RegionSelectModal } from './RegionSelectModal';
-import { CloudRain, Umbrella, MapPin, ChevronDown, RefreshCw } from 'lucide-react';
+import { CloudSun, MapPin, ChevronDown, RefreshCw } from 'lucide-react';
 import {
   ResponsiveContainer,
   BarChart,
@@ -33,7 +33,7 @@ export const RainForecastCard: React.FC<Props> = ({
   if (!weather && loading) {
     return (
       <div className="saniti-card" style={{ minHeight: '330px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <div style={{ color: 'var(--color-mute)', fontSize: '13px', fontFamily: 'var(--font-sans)' }}>
+        <div style={{ color: 'var(--color-mute)', fontSize: '13px', fontFamily: "'Noto Sans KR', sans-serif" }}>
           날씨 데이터를 불러오는 중...
         </div>
       </div>
@@ -67,19 +67,19 @@ export const RainForecastCard: React.FC<Props> = ({
       rainProb: h.rainProb,
       temp: h.temp,
       isToday: h.isToday,
-      isNow: idx === todayCurrentIndex // Exactly ONE item is marked as Now
+      isNow: idx === todayCurrentIndex
     };
   });
 
-  // Calculate exact percentage between 22시 (end of today) and 00시 (start of tomorrow)
+  // Calculate exact percentage between today (22시) and tomorrow (00시)
   const dividerPercent = rawData.length > 0 ? (todayCount / rawData.length) * 100 : 50;
 
   return (
     <div className="saniti-card">
       <div className="card-header">
         <div className="card-header-left">
-          <CloudRain size={16} color="var(--color-rain-blue)" />
-          <h2 className="card-title">비 올 확률 예보</h2>
+          <CloudSun size={16} color="var(--color-rain-blue)" />
+          <h2 className="card-title" style={{ fontFamily: "'Noto Sans KR', sans-serif" }}>날씨</h2>
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
@@ -87,9 +87,10 @@ export const RainForecastCard: React.FC<Props> = ({
             className="weather-location-btn"
             onClick={() => setIsRegionModalOpen(true)}
             title="지역 변경"
+            style={{ fontFamily: "'Noto Sans KR', sans-serif" }}
           >
             <MapPin size={12} color="var(--color-brand)" />
-            <span>{selectedRegion.name}</span>
+            <span style={{ fontFamily: "'Noto Sans KR', sans-serif" }}>{selectedRegion.name}</span>
             <ChevronDown size={12} />
           </button>
 
@@ -105,54 +106,86 @@ export const RainForecastCard: React.FC<Props> = ({
       </div>
 
       <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-md)' }}>
-        {/* Today vs Tomorrow Rain Highlights */}
+        {/* Today vs Tomorrow Rain Highlights (Today Subtly Emphasized) */}
         <div className="rain-highlight-grid">
-          {/* Today Card */}
-          <div className={`rain-day-card ${weather?.today.needUmbrella ? 'active-rain' : ''}`}>
+          {/* Today Card (Featured Emphasis) */}
+          <div
+            className="rain-day-card"
+            style={{
+              backgroundColor: '#ffffff',
+              borderColor: '#cbd5e1',
+              boxShadow: '0 2px 5px rgba(0, 0, 0, 0.04)'
+            }}
+          >
             <div className="rain-day-header">
-              <span className="rain-day-tag">오늘</span>
-              <span className={`rain-umbrella-badge ${weather?.today.needUmbrella ? 'need-umbrella' : 'safe'}`}>
-                <Umbrella size={11} />
-                {weather?.today.needUmbrella ? '우산 챙기세요' : '우산 불필요'}
+              <span style={{ fontSize: '11.5px', color: 'var(--color-slate-soft)', fontWeight: 600, fontFamily: "'Noto Sans KR', sans-serif" }}>
+                강수확률
+              </span>
+              <span
+                className="rain-day-tag"
+                style={{
+                  fontFamily: "'Noto Sans KR', sans-serif",
+                  fontSize: '11px',
+                  fontWeight: 700,
+                  backgroundColor: 'var(--color-ink)',
+                  color: '#ffffff',
+                  padding: '2px 8px',
+                  borderRadius: '4px',
+                  letterSpacing: '0.02em'
+                }}
+              >
+                오늘
               </span>
             </div>
 
             <div className="rain-prob-display">
-              <span className={`rain-prob-number ${(weather?.today.maxRainProb || 0) >= 50 ? 'high-prob' : ''}`}>
+              <span className={`rain-prob-number ${(weather?.today.maxRainProb || 0) >= 40 ? 'high-prob' : ''}`} style={{ fontFamily: "'Noto Sans KR', sans-serif" }}>
                 {weather?.today.maxRainProb ?? 0}
               </span>
-              <span className="rain-prob-unit">%</span>
+              <span className="rain-prob-unit" style={{ fontFamily: "'Noto Sans KR', sans-serif" }}>%</span>
             </div>
 
-            <div className="rain-day-footer">
-              <span>{todayInfo.icon} {todayInfo.label}</span>
-              <span style={{ fontWeight: 600 }}>
-                {weather?.today.tempMin}° / {weather?.today.tempMax}°
+            <div className="rain-day-footer" style={{ fontFamily: "'Noto Sans KR', sans-serif" }}>
+              <span style={{ fontWeight: 600 }}>{todayInfo.icon} {todayInfo.label}</span>
+              <span style={{ fontWeight: 600, fontSize: '11px', color: 'var(--color-slate)' }}>
+                최저 {weather?.today.tempMin}° · 최고 {weather?.today.tempMax}°
               </span>
             </div>
           </div>
 
-          {/* Tomorrow Card */}
-          <div className={`rain-day-card ${weather?.tomorrow.needUmbrella ? 'active-rain' : ''}`}>
+          {/* Tomorrow Card (Subtle Secondary) */}
+          <div className="rain-day-card">
             <div className="rain-day-header">
-              <span className="rain-day-tag">내일</span>
-              <span className={`rain-umbrella-badge ${weather?.tomorrow.needUmbrella ? 'need-umbrella' : 'safe'}`}>
-                <Umbrella size={11} />
-                {weather?.tomorrow.needUmbrella ? '우산 준비' : '맑음/안전'}
+              <span style={{ fontSize: '11.5px', color: 'var(--color-slate-soft)', fontWeight: 600, fontFamily: "'Noto Sans KR', sans-serif" }}>
+                강수확률
+              </span>
+              <span
+                className="rain-day-tag"
+                style={{
+                  fontFamily: "'Noto Sans KR', sans-serif",
+                  fontSize: '11px',
+                  fontWeight: 500,
+                  backgroundColor: 'var(--color-canvas-elevated)',
+                  color: 'var(--color-slate)',
+                  padding: '2px 8px',
+                  borderRadius: '4px'
+                }}
+              >
+                내일
               </span>
             </div>
 
             <div className="rain-prob-display">
-              <span className={`rain-prob-number ${(weather?.tomorrow.maxRainProb || 0) >= 50 ? 'high-prob' : ''}`}>
+              <span className={`rain-prob-number ${(weather?.tomorrow.maxRainProb || 0) >= 40 ? 'high-prob' : ''}`} style={{ fontFamily: "'Noto Sans KR', sans-serif" }}>
                 {weather?.tomorrow.maxRainProb ?? 0}
               </span>
-              <span className="rain-prob-unit">%</span>
+              <span className="rain-prob-unit" style={{ fontFamily: "'Noto Sans KR', sans-serif" }}>%</span>
             </div>
 
-            <div className="rain-day-footer">
-              <span>{tomorrowInfo.icon} {tomorrowInfo.label}</span>
-              <span style={{ fontWeight: 600 }}>
-                {weather?.tomorrow.tempMin}° / {weather?.tomorrow.tempMax}°
+            <div className="rain-day-footer" style={{ fontFamily: "'Noto Sans KR', sans-serif" }}>
+              <span style={{ fontWeight: 600 }}>{tomorrowInfo.icon} {tomorrowInfo.label}</span>
+              <span style={{ fontWeight: 600, fontSize: '11px', color: 'var(--color-slate)' }}>
+                최저 {weather?.tomorrow.tempMin}° · 최고 {weather?.tomorrow.tempMax}°
               </span>
             </div>
           </div>
@@ -161,10 +194,10 @@ export const RainForecastCard: React.FC<Props> = ({
         {/* 48-Hour Rain Probability Timeline Chart */}
         <div className="rain-chart-container" style={{ flex: 1, minHeight: '130px', display: 'flex', flexDirection: 'column', position: 'relative' }}>
           <div className="rain-chart-header" style={{ marginBottom: '4px' }}>
-            <span style={{ fontSize: '11px', fontWeight: 700, color: 'var(--color-slate-soft)' }}>
+            <span style={{ fontSize: '11px', fontWeight: 700, color: 'var(--color-slate-soft)', fontFamily: "'Noto Sans KR', sans-serif" }}>
               시간대별 강수확률 (오늘~내일 48H)
             </span>
-            <span style={{ fontSize: '11px', color: 'var(--color-slate)', fontWeight: 600 }}>
+            <span style={{ fontSize: '11px', color: 'var(--color-slate)', fontWeight: 600, fontFamily: "'Noto Sans KR', sans-serif" }}>
               현재 {weather?.currentTemp}°C
             </span>
           </div>
@@ -189,7 +222,6 @@ export const RainForecastCard: React.FC<Props> = ({
                   dataKey="hour"
                   stroke="#cbd5e1"
                   tick={({ x, y, payload, index }) => {
-                    // Look up by exact index so tomorrow's 22시 is NOT highlighted
                     const isNow = chartData[index]?.isNow;
                     return (
                       <text
@@ -199,7 +231,7 @@ export const RainForecastCard: React.FC<Props> = ({
                         fill={isNow ? '#f36458' : '#64748b'}
                         fontSize={9.5}
                         fontWeight={isNow ? 700 : 500}
-                        fontFamily="var(--font-sans)"
+                        fontFamily="'Noto Sans KR', sans-serif"
                       >
                         {payload.value}
                       </text>
@@ -223,7 +255,7 @@ export const RainForecastCard: React.FC<Props> = ({
                             padding: '6px 10px',
                             borderRadius: '6px',
                             fontSize: '11px',
-                            fontFamily: 'var(--font-sans)'
+                            fontFamily: "'Noto Sans KR', sans-serif"
                           }}
                         >
                           <div style={{ color: '#64748b', marginBottom: '2px', fontWeight: 600 }}>
@@ -246,7 +278,7 @@ export const RainForecastCard: React.FC<Props> = ({
                   {chartData.map((entry, index) => {
                     let barFill = entry.rainProb >= 50 ? '#0284c7' : entry.rainProb >= 20 ? '#38bdf8' : '#e2e8f0';
                     if (entry.isNow) {
-                      barFill = '#f36458'; // Coral Red Highlight strictly for today's 22:00
+                      barFill = '#f36458';
                     }
                     return <Cell key={`cell-${index}`} fill={barFill} />;
                   })}

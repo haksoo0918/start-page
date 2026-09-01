@@ -75,6 +75,12 @@ export async function fetchRainWeather(region: Region): Promise<WeatherData> {
 
     const todayMaxRain = data.daily.precipitation_probability_max[0] ?? 0;
     const tomorrowMaxRain = data.daily.precipitation_probability_max[1] ?? 0;
+    const todayCode = data.daily.weathercode[0] ?? 0;
+    const tomorrowCode = data.daily.weathercode[1] ?? 0;
+
+    // Need umbrella if weather code indicates rain/drizzle/shower/snow (>= 51) OR rain prob >= 30%
+    const isTodayRainy = todayCode >= 51 || todayMaxRain >= 30;
+    const isTomorrowRainy = tomorrowCode >= 51 || tomorrowMaxRain >= 30;
 
     return {
       region,
@@ -84,8 +90,8 @@ export async function fetchRainWeather(region: Region): Promise<WeatherData> {
         maxRainProb: todayMaxRain,
         tempMax: Math.round(data.daily.temperature_2m_max[0]),
         tempMin: Math.round(data.daily.temperature_2m_min[0]),
-        weatherCode: data.daily.weathercode[0] ?? 0,
-        needUmbrella: todayMaxRain >= 40
+        weatherCode: todayCode,
+        needUmbrella: isTodayRainy
       },
       tomorrow: {
         date: data.daily.time[1],
@@ -93,8 +99,8 @@ export async function fetchRainWeather(region: Region): Promise<WeatherData> {
         maxRainProb: tomorrowMaxRain,
         tempMax: Math.round(data.daily.temperature_2m_max[1]),
         tempMin: Math.round(data.daily.temperature_2m_min[1]),
-        weatherCode: data.daily.weathercode[1] ?? 0,
-        needUmbrella: tomorrowMaxRain >= 40
+        weatherCode: tomorrowCode,
+        needUmbrella: isTomorrowRainy
       },
       hourly: hourlyList,
       currentTemp: Math.round(hourlyTemp[currentHourIndex] || hourlyTemp[0] || 20),

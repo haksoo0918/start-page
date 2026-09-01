@@ -7,7 +7,7 @@ import { PRESET_LINKS, BookmarkLink } from './data/presetLinks';
 import { DEFAULT_REGION, Region } from './data/koreaRegions';
 import { WeatherData, fetchRainWeather } from './services/weatherService';
 import { useLocalStorage } from './hooks/useLocalStorage';
-import { Image as ImageIcon } from 'lucide-react';
+import { Image as ImageIcon, MapPin } from 'lucide-react';
 import './styles/app.css';
 
 const DEFAULT_BG_SETTINGS: BackgroundSettings = {
@@ -112,24 +112,23 @@ export const App: React.FC = () => {
             <span className="header-subtitle">DESKTOP DASHBOARD</span>
           </div>
 
-          <div className="header-status">
-            <span className="mono-eyebrow">
-              LOCATION: {selectedRegion.name}
+          <div className="header-status" style={{ fontFamily: "'Noto Sans KR', sans-serif" }}>
+            <span style={{ display: 'flex', alignItems: 'center', gap: '4px', fontFamily: "'Noto Sans KR', sans-serif" }}>
+              <MapPin size={13} color="var(--color-brand)" />
+              <strong style={{ fontFamily: "'Noto Sans KR', sans-serif" }}>{selectedRegion.name}</strong>
             </span>
-            <span style={{ color: 'var(--color-graphite)' }}>|</span>
-            <span className="mono-eyebrow" style={{ color: weather?.today.needUmbrella ? 'var(--color-brand)' : 'var(--color-success)' }}>
-              {weather?.today.needUmbrella ? 'RAIN EXPECTED 🌧️' : 'CLEAR SKY ☀️'}
+            <span style={{ color: 'var(--color-hairline)' }}>|</span>
+            <span style={{ fontFamily: "'Noto Sans KR', sans-serif" }}>
+              {weather?.today.needUmbrella ? '🌧️ 오늘 비 예보 (우산 필요)' : '☀️ 오늘 비 소식 없음'}
             </span>
-            <span style={{ color: 'var(--color-graphite)' }}>|</span>
-
-            {/* Background Settings Button */}
+            
             <button
-              className="weather-location-btn"
+              className="link-action-btn"
               onClick={() => setIsBgModalOpen(true)}
-              title="배경 이미지 설정"
+              title="배경 화면 설정"
+              style={{ marginLeft: '6px', padding: '4px' }}
             >
-              <ImageIcon size={13} color="var(--color-slate)" />
-              <span>배경 설정</span>
+              <ImageIcon size={15} color="var(--color-slate)" />
             </button>
           </div>
         </header>

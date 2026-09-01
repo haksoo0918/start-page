@@ -30,9 +30,9 @@
   --color-stock-up: #ef4444;
   --color-stock-down: #2563eb;
 
-  /* Typography */
+  /* Typography: 100% Noto Sans KR */
   --font-sans: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-mono: 'IBM Plex Mono', monospace;
+  --font-mono: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 
   /* Border Radii (Saniti Spec) */
   --radius-none: 0px;
@@ -61,12 +61,13 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  font-family: var(--font-sans);
 }
 
 html, body {
   height: 100vh;
   width: 100vw;
-  overflow: hidden; /* Prevent window scrollbar */
+  overflow: hidden;
   font-family: var(--font-sans);
   background-color: var(--color-canvas);
   color: var(--color-ink);
@@ -78,6 +79,11 @@ html, body {
   height: 100vh;
   width: 100vw;
   overflow: hidden;
+  font-family: var(--font-sans);
+}
+
+button, input, select, textarea {
+  font-family: var(--font-sans);
 }
 
 /* Scrollbar styling */
@@ -98,11 +104,11 @@ html, body {
 
 /* Common Typography Classes */
 .mono-eyebrow {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 11px;
-  font-weight: 500;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.04em;
   color: var(--color-slate-soft);
 }
 
