@@ -211,17 +211,17 @@ export const LinksHub: React.FC<Props> = ({
             );
           })}
 
-          {/* Quick Add Placeholder Tile */}
+          {/* Quick Add Card */}
           <button
-            className="link-tile link-tile-add"
+            className="add-link-tile"
             onClick={() => {
               setEditingLink(null);
               setIsModalOpen(true);
             }}
             style={{ fontFamily: "'Noto Sans KR', sans-serif" }}
           >
-            <Plus size={20} color="var(--color-mute)" />
-            <span style={{ fontSize: '12px', fontWeight: 600, color: 'var(--color-slate-soft)', marginTop: '4px', fontFamily: "'Noto Sans KR', sans-serif" }}>
+            <Plus size={20} />
+            <span style={{ fontSize: '12px', fontWeight: 600, fontFamily: "'Noto Sans KR', sans-serif" }}>
               새 바로가기 추가
             </span>
           </button>
