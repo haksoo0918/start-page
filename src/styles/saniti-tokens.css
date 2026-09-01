@@ -1,0 +1,116 @@
+:root {
+  /* Colors from Saniti Design System (Light / Paper Mode) */
+  --color-primary: #111827;
+  --color-on-primary: #111827;
+  --color-brand: #f36458;
+  --color-brand-deep: #dd0000;
+  --color-brand-glow: rgba(243, 100, 88, 0.2);
+  --color-ink: #111827;
+  --color-ink-soft: #374151;
+  --color-graphite: #e5e7eb;
+  --color-slate: #4b5563;
+  --color-slate-soft: #6b7280;
+  --color-mute: #9ca3af;
+  --color-ash: #4b5563;
+  --color-ash-light: #1f2937;
+  --color-hairline: #e5e7eb;
+  --color-hairline-soft: #f3f4f6;
+  --color-canvas: #f8f9fa;
+  --color-canvas-soft: #f9fafb;
+  --color-canvas-card: #ffffff;
+  --color-canvas-elevated: #f3f4f6;
+  --color-canvas-light: #ffffff;
+  --color-canvas-paper: #f3f4f6;
+  --color-link-blue: #0052ef;
+  --color-link-blue-soft: #0284c7;
+  --color-rain-blue: #0284c7;
+  --color-rain-high: #0369a1;
+  --color-success: #16a34a;
+  --color-error: #dc2626;
+  --color-stock-up: #ef4444;
+  --color-stock-down: #2563eb;
+
+  /* Typography */
+  --font-sans: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+
+  /* Border Radii (Saniti Spec) */
+  --radius-none: 0px;
+  --radius-app-xs: 3px;
+  --radius-app-sm: 4px;
+  --radius-app-md: 6px;
+  --radius-app-lg: 8px;
+  --radius-marketing: 12px;
+  --radius-full: 9999px;
+
+  /* Spacing */
+  --spacing-xxs: 4px;
+  --spacing-xs: 8px;
+  --spacing-sm: 12px;
+  --spacing-md: 16px;
+  --spacing-lg: 20px;
+  --spacing-xl: 28px;
+  --spacing-xxl: 40px;
+
+  /* Shadows */
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
+  --shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden; /* Prevent window scrollbar */
+  font-family: var(--font-sans);
+  background-color: var(--color-canvas);
+  color: var(--color-ink);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-hairline);
+  border-radius: var(--radius-full);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-mute);
+}
+
+/* Common Typography Classes */
+.mono-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-slate-soft);
+}
+
+.brand-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-brand);
+  box-shadow: 0 0 6px var(--color-brand-glow);
+}
