@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { BookmarkLink } from '../data/presetLinks';
-import { Plus, Edit2, Trash2 } from 'lucide-react';
+import { Plus, Edit2, Trash2, Globe } from 'lucide-react';
 import { BookmarkModal } from './BookmarkModal';
 
 interface Props {
@@ -10,6 +10,53 @@ interface Props {
   onDeleteLink: (id: string) => void;
   onReorderLinks: (newLinks: BookmarkLink[]) => void;
 }
+
+// Resilient Favicon Component with Graceful Fallback
+const FaviconImage: React.FC<{ url: string; title: string }> = ({ url, title }) => {
+  const [error, setError] = useState(false);
+
+  const getFaviconUrl = (targetUrl: string) => {
+    try {
+      const domain = new URL(targetUrl).hostname;
+      return `https://www.google.com/s2/favicons?domain=${domain}&sz=64`;
+    } catch {
+      return '';
+    }
+  };
+
+  const faviconSrc = getFaviconUrl(url);
+
+  if (error || !faviconSrc) {
+    return (
+      <div
+        style={{
+          width: '20px',
+          height: '20px',
+          borderRadius: '4px',
+          backgroundColor: 'var(--color-canvas-elevated)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          fontSize: '11px',
+          fontWeight: 700,
+          color: 'var(--color-brand)'
+        }}
+      >
+        <Globe size={13} color="var(--color-slate-soft)" />
+      </div>
+    );
+  }
+
+  return (
+    <img
+      src={faviconSrc}
+      alt={title}
+      className="link-favicon"
+      onError={() => setError(true)}
+      loading="lazy"
+    />
+  );
+};
 
 export const LinksHub: React.FC<Props> = ({
   links,
@@ -33,15 +80,6 @@ export const LinksHub: React.FC<Props> = ({
     }
   };
 
-  const getFaviconUrl = (url: string) => {
-    try {
-      const domain = new URL(url).hostname;
-      return `https://www.google.com/s2/favicons?domain=${domain}&sz=64`;
-    } catch {
-      return '';
-    }
-  };
-
   const handleEdit = (link: BookmarkLink, e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -61,7 +99,6 @@ export const LinksHub: React.FC<Props> = ({
   const handleDragStart = (e: React.DragEvent, index: number) => {
     setDraggedIndex(index);
     e.dataTransfer.effectAllowed = 'move';
-    // Transparent or ghost image
     e.dataTransfer.setData('text/plain', index.toString());
   };
 
@@ -74,7 +111,7 @@ export const LinksHub: React.FC<Props> = ({
   };
 
   const handleDragLeave = () => {
-    setDragOverIndex(null);
+    // Keep dragover active until drop
   };
 
   const handleDrop = (e: React.DragEvent, dropIndex: number) => {
@@ -104,15 +141,15 @@ export const LinksHub: React.FC<Props> = ({
       <div className="card-header">
         <div className="card-header-left">
           <span className="brand-dot" />
-          <h2 className="card-title">자주 가는 링크</h2>
-          <span className="mono-eyebrow" style={{ marginLeft: '6px' }}>
+          <h2 className="card-title" style={{ fontFamily: "'Noto Sans KR', sans-serif" }}>자주 가는 링크</h2>
+          <span className="mono-eyebrow" style={{ marginLeft: '6px', fontFamily: "'Noto Sans KR', sans-serif" }}>
             {links.length} SITES (DRAG TO REORDER)
           </span>
         </div>
 
         <button
           className="btn-primary"
-          style={{ display: 'flex', alignItems: 'center', gap: '4px' }}
+          style={{ display: 'flex', alignItems: 'center', gap: '4px', fontFamily: "'Noto Sans KR', sans-serif" }}
           onClick={() => {
             setEditingLink(null);
             setIsModalOpen(true);
@@ -147,14 +184,7 @@ export const LinksHub: React.FC<Props> = ({
               >
                 <div className="link-tile-header">
                   <div className="link-favicon-wrapper">
-                    <img
-                      src={getFaviconUrl(link.url)}
-                      alt={link.title}
-                      className="link-favicon"
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).style.display = 'none';
-                      }}
-                    />
+                    <FaviconImage url={link.url} title={link.title} />
                   </div>
 
                   <div className="link-actions">
@@ -175,22 +205,25 @@ export const LinksHub: React.FC<Props> = ({
                   </div>
                 </div>
 
-                <div className="link-title">{link.title}</div>
-                <div className="link-url">{domain}</div>
+                <div className="link-title" style={{ fontFamily: "'Noto Sans KR', sans-serif" }}>{link.title}</div>
+                <div className="link-url" style={{ fontFamily: "'Noto Sans KR', sans-serif" }}>{domain}</div>
               </a>
             );
           })}
 
-          {/* Quick Add Card */}
+          {/* Quick Add Placeholder Tile */}
           <button
-            className="add-link-tile"
+            className="link-tile link-tile-add"
             onClick={() => {
               setEditingLink(null);
               setIsModalOpen(true);
             }}
+            style={{ fontFamily: "'Noto Sans KR', sans-serif" }}
           >
-            <Plus size={20} />
-            <span style={{ fontSize: '12px', fontWeight: 600 }}>새 바로가기 추가</span>
+            <Plus size={20} color="var(--color-mute)" />
+            <span style={{ fontSize: '12px', fontWeight: 600, color: 'var(--color-slate-soft)', marginTop: '4px', fontFamily: "'Noto Sans KR', sans-serif" }}>
+              새 바로가기 추가
+            </span>
           </button>
         </div>
       </div>

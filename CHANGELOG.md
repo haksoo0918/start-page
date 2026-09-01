@@ -3,6 +3,18 @@
 모든 주요 변경 사항은 이 문서에 기록됩니다.
 이 프로젝트는 [Semantic Versioning](https://semver.org/lang/ko/)을 따릅니다.
 
+## [1.5.1] - 2026-09-02
+
+### 🛡️ 안정성 및 품질 강화 (Resilience & Tests)
+- **파비콘 에러 방어 및 Fallback 고도화 (`LinksHub.tsx`)**:
+  - 외부 파비콘 로딩 실패 시 깨진 이미지 엑스박스 대신 단정한 지구본/이니셜 대체 배지로 자동 전환
+- **TDD 단위 테스트 스위트 전면 확장**:
+  - `stockData.test.ts` (7대 시세 무결성 및 시장별 타임라인 검증)
+  - `weatherService.test.ts` (기상 코드 매핑 및 지역 정합성 검증)
+  - `useLocalStorage.test.ts` (스토리지 직렬화 및 상태 동기화 검증)
+  - `urlHelper.test.ts` (URL 정규화 및 타이틀 추출 검증)
+  - ➔ 총 18개 단위 테스트 100% Pass (Green) 달성
+
 ## [1.5.0] - 2026-09-02
 
 ### ✨ 신규 기능 (Feature)
@@ -10,7 +22,6 @@
   - 바로가기 추가/수정 모달에서 웹사이트 주소(URL) 입력 필드를 1순위로 배치 및 자동 포커스
   - 주소 입력 시 실제 웹페이지의 HTML `<title>`을 비동기로 자동 조회하여 제목 칸에 자동 완성
   - 제목 조회 중 회전 스피너 애니메이션(`@keyframes spin`) 및 `✨ 자동 완성됨` 인디케이터 제공
-  - `urlHelper.ts` 및 `urlHelper.test.ts` TDD 단위 테스트 구축
 
 ## [1.4.1] - 2026-09-01
 
@@ -24,9 +35,6 @@
   - 헤더의 '배경 설정' 버튼 및 아이콘 완전 제거
   - `BackgroundModal.tsx` 컴포넌트 및 배경 이미지 렌더링 레이어, 로컬스토리지 상태 관리 코드 전면 삭제
   - Saniti Light 본연의 정갈하고 가벼운 순수 대시보드로 복원
-- **TDD (Test-Driven Development) 인프라 도입**:
-  - `vitest`, `jsdom`, `@testing-library/react` 기반 단위 테스트 환경 구축
-  - 시세 7대 자산, 날씨 기상청 파싱, 로컬스토리지 훅 11개 단위 테스트 100% Green 달성
 
 ## [1.3.0] - 2026-09-01
 
