@@ -3,13 +3,18 @@
 모든 주요 변경 사항은 이 문서에 기록됩니다.
 이 프로젝트는 [Semantic Versioning](https://semver.org/lang/ko/)을 따릅니다.
 
+## [1.4.1] - 2026-09-01
+
+### 🎨 스타일 미세 조정 (Style)
+- `dashboard-header` 좌우 내부 패딩(`padding: 8px 16px 12px 16px`)을 적용하여 타이틀 및 상태 텍스트의 여유 공간 확보
+
 ## [1.4.0] - 2026-09-01
 
 ### 🗑️ 기능 제거 및 최적화 (Cleanup)
 - **배경 커스터마이징 기능 완전 삭제**:
   - 헤더의 '배경 설정' 버튼 및 아이콘 완전 제거
   - `BackgroundModal.tsx` 컴포넌트 및 배경 이미지 렌더링 레이어, 로컬스토리지 상태 관리 코드 전면 삭제
-  - Saniti Light 본연의 정갈하고 가벼운 순수 고정 대시보드로 복원
+  - Saniti Light 본연의 정갈하고 가벼운 순수 대시보드로 복원
 - **TDD (Test-Driven Development) 인프라 도입**:
   - `vitest`, `jsdom`, `@testing-library/react` 기반 단위 테스트 환경 구축
   - 시세 7대 자산, 날씨 기상청 파싱, 로컬스토리지 훅 11개 단위 테스트 100% Green 달성
