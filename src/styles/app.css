@@ -1,5 +1,20 @@
 @import './saniti-tokens.css';
 
+/* Spinner Rotation Keyframes */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spin {
+  animation: spin 0.8s linear infinite;
+  display: inline-block;
+}
+
 /* App Container (Strict 100vh Fixed Layout without Window Scroll) */
 .dashboard-container {
   max-width: 1840px;
