@@ -3,6 +3,15 @@
 모든 주요 변경 사항은 이 문서에 기록됩니다.
 이 프로젝트는 [Semantic Versioning](https://semver.org/lang/ko/)을 따릅니다.
 
+## [1.6.0] - 2026-09-02
+
+### 🚀 배포 및 플랫폼 확장 (Platform & Extension)
+- **크롬 확장 프로그램 (Manifest V3) 정식 지원**:
+  - `public/manifest.json` 구성을 통해 `dist` 폴더를 Chrome, Edge, Whale 브라우저의 새 탭 확장 프로그램으로 직접 등록 가능 (로컬 서버/터미널 실행 불필요)
+  - `host_permissions` 권한 등록을 통해 확장 프로그램 환경에서의 Yahoo Finance 및 외부 API CORS 차단 원천 해결
+- **종합 [README.md](README.md) 가이드 구축**:
+  - 확장 프로그램 10초 등록 가이드 및 Vercel 무료 웹 배포 가이드 수록
+
 ## [1.5.2] - 2026-09-02
 
 ### 🎨 UI 및 스타일 정돈 (Style & Cleanup)

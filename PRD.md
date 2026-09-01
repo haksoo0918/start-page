@@ -5,24 +5,24 @@
 
 ---
 
-## 2. 변경 요구사항: 파비콘 로딩 Fallback 강화 및 TDD 테스트 커버리지 전면 확장
+## 2. 변경 요구사항: 크롬 확장 프로그램 CORS 방어 및 host_permissions 권한 부여
 
-### 2.1 파비콘(Favicon) 에러 방어 및 폴백 고도화 (`LinksHub.tsx`)
-- **문제**: 일부 웹사이트의 파비콘 로딩 실패 또는 네트워크 지연 시 브라우저 기본 엑스박스(깨진 이미지)가 노출될 위험.
-- **해결 방안**:
-  - `img onError` 핸들러를 장착하여 파비콘 로딩 실패 시 사이트의 첫 글자(이니셜) 컬러 배지 또는 기본 브랜드 아이콘으로 매끄럽게 fallback 처리.
-  - 파비콘 로딩 완료 전 깜빡임 방지.
+### 2.1 문제 정의
+- `chrome-extension://` 오리진 환경에서 Yahoo Finance 시세 API 호출 시 `host_permissions` 부재로 인한 CORS 차단 에러 발생.
 
-### 2.2 TDD 테스트 스위트 전면 확장 (Test Suite Expansion)
-- **시세 데이터 Seam (`stockData.test.ts`)**: 7대 핵심 자산 무결성 및 시장별(KR/US/24H) 1D/1W/1M/1Y 데이터 구조 검증.
-- **날씨 서비스 Seam (`weatherService.test.ts`)**: 날씨 코드 매핑 및 기본 지역(일산동구) 정합성 검증.
-- **스토리지 훅 Seam (`useLocalStorage.test.ts`)**: 상태 저장 및 JSON 직렬화/역직렬화 fallback 검증.
+### 2.2 해결 방안
+- `public/manifest.json`에 `host_permissions` 명시:
+  - `"https://query1.finance.yahoo.com/*"`
+  - `"https://api.open-meteo.com/*"`
+  - `"https://api.binance.com/*"`
+  - `"https://api.microlink.io/*"`
+  - `"https://*/*"`
+- 크롬 확장 프로그램이 외부 시세, 날씨, 타이틀 조회 API와 CORS 제약 없이 자유롭고 안전하게 통신하도록 보장.
 
 ---
 
 ## 3. 진행 절차
 1. **PRD 및 계획서 업데이트** (현재 단계)
 2. **사용자 승인 확인** 
-3. **단위 테스트 스위트 작성 (`stockData.test.ts`, `weatherService.test.ts`, `useLocalStorage.test.ts`)** 
-4. **LinksHub.tsx 파비콘 에러 방어 및 fallback 적용** 
-5. **테스트/빌드 검증 및 캡쳐 화면 확인** 
+3. **public/manifest.json host_permissions 추가 및 빌드** 
+4. **확장 프로그램 새로고침 후 통신 정상화 확인** 
