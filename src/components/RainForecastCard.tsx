@@ -33,7 +33,9 @@ export const RainForecastCard: React.FC<Props> = ({
   if (!weather && loading) {
     return (
       <div className="saniti-card" style={{ minHeight: '330px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <div style={{ color: 'var(--color-mute)', fontSize: '13px' }}>날씨 데이터를 불러오는 중...</div>
+        <div style={{ color: 'var(--color-mute)', fontSize: '13px', fontFamily: 'var(--font-sans)' }}>
+          날씨 데이터를 불러오는 중...
+        </div>
       </div>
     );
   }
@@ -41,14 +43,36 @@ export const RainForecastCard: React.FC<Props> = ({
   const todayInfo = weather ? getWeatherInfo(weather.today.weatherCode) : { label: '', icon: '' };
   const tomorrowInfo = weather ? getWeatherInfo(weather.tomorrow.weatherCode) : { label: '', icon: '' };
 
-  // Format hourly data for chart (next 24~48 hours)
-  const chartData = weather?.hourly.map((h, idx) => ({
-    hour: h.hour,
-    displayTime: idx === 0 ? '지금' : h.hour,
-    rainProb: h.rainProb,
-    temp: h.temp,
-    isToday: h.isToday
-  })) || [];
+  // 2-hour interval data
+  const rawData = weather?.hourly.filter((_, i) => i % 2 === 0) || [];
+  const currentHourNum = new Date().getHours();
+
+  // Find exact index for today's current hour
+  let todayCurrentIndex = -1;
+  let todayCount = 0;
+
+  rawData.forEach((h, idx) => {
+    if (h.isToday) {
+      todayCount++;
+      const hourVal = parseInt(h.hour.replace('시', ''), 10);
+      if (Math.abs(hourVal - currentHourNum) <= 1 && todayCurrentIndex === -1) {
+        todayCurrentIndex = idx;
+      }
+    }
+  });
+
+  const chartData = rawData.map((h, idx) => {
+    return {
+      hour: h.hour,
+      rainProb: h.rainProb,
+      temp: h.temp,
+      isToday: h.isToday,
+      isNow: idx === todayCurrentIndex // Exactly ONE item is marked as Now
+    };
+  });
+
+  // Calculate exact percentage between 22시 (end of today) and 00시 (start of tomorrow)
+  const dividerPercent = rawData.length > 0 ? (todayCount / rawData.length) * 100 : 50;
 
   return (
     <div className="saniti-card">
@@ -58,7 +82,7 @@ export const RainForecastCard: React.FC<Props> = ({
           <h2 className="card-title">비 올 확률 예보</h2>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
           <button
             className="weather-location-btn"
             onClick={() => setIsRegionModalOpen(true)}
@@ -86,7 +110,7 @@ export const RainForecastCard: React.FC<Props> = ({
           {/* Today Card */}
           <div className={`rain-day-card ${weather?.today.needUmbrella ? 'active-rain' : ''}`}>
             <div className="rain-day-header">
-              <span className="rain-day-tag">오늘 (TODAY)</span>
+              <span className="rain-day-tag">오늘</span>
               <span className={`rain-umbrella-badge ${weather?.today.needUmbrella ? 'need-umbrella' : 'safe'}`}>
                 <Umbrella size={11} />
                 {weather?.today.needUmbrella ? '우산 챙기세요' : '우산 불필요'}
@@ -102,7 +126,7 @@ export const RainForecastCard: React.FC<Props> = ({
 
             <div className="rain-day-footer">
               <span>{todayInfo.icon} {todayInfo.label}</span>
-              <span style={{ fontFamily: 'var(--font-mono)' }}>
+              <span style={{ fontWeight: 600 }}>
                 {weather?.today.tempMin}° / {weather?.today.tempMax}°
               </span>
             </div>
@@ -111,7 +135,7 @@ export const RainForecastCard: React.FC<Props> = ({
           {/* Tomorrow Card */}
           <div className={`rain-day-card ${weather?.tomorrow.needUmbrella ? 'active-rain' : ''}`}>
             <div className="rain-day-header">
-              <span className="rain-day-tag">내일 (TOMORROW)</span>
+              <span className="rain-day-tag">내일</span>
               <span className={`rain-umbrella-badge ${weather?.tomorrow.needUmbrella ? 'need-umbrella' : 'safe'}`}>
                 <Umbrella size={11} />
                 {weather?.tomorrow.needUmbrella ? '우산 준비' : '맑음/안전'}
@@ -127,7 +151,7 @@ export const RainForecastCard: React.FC<Props> = ({
 
             <div className="rain-day-footer">
               <span>{tomorrowInfo.icon} {tomorrowInfo.label}</span>
-              <span style={{ fontFamily: 'var(--font-mono)' }}>
+              <span style={{ fontWeight: 600 }}>
                 {weather?.tomorrow.tempMin}° / {weather?.tomorrow.tempMax}°
               </span>
             </div>
@@ -135,23 +159,55 @@ export const RainForecastCard: React.FC<Props> = ({
         </div>
 
         {/* 48-Hour Rain Probability Timeline Chart */}
-        <div className="rain-chart-container" style={{ flex: 1, minHeight: '130px', display: 'flex', flexDirection: 'column' }}>
-          <div className="rain-chart-header" style={{ marginBottom: '6px' }}>
-            <span className="mono-eyebrow">시간대별 강수확률 (48H TIMELINE)</span>
-            <span style={{ fontSize: '11px', color: 'var(--color-slate)', fontFamily: 'var(--font-mono)' }}>
+        <div className="rain-chart-container" style={{ flex: 1, minHeight: '130px', display: 'flex', flexDirection: 'column', position: 'relative' }}>
+          <div className="rain-chart-header" style={{ marginBottom: '4px' }}>
+            <span style={{ fontSize: '11px', fontWeight: 700, color: 'var(--color-slate-soft)' }}>
+              시간대별 강수확률 (오늘~내일 48H)
+            </span>
+            <span style={{ fontSize: '11px', color: 'var(--color-slate)', fontWeight: 600 }}>
               현재 {weather?.currentTemp}°C
             </span>
           </div>
 
-          <div style={{ flex: 1, width: '100%', minHeight: '100px' }}>
+          <div style={{ flex: 1, width: '100%', minHeight: '100px', position: 'relative' }}>
+            {/* Clean Background Vertical Divider Line Exactly Between Today (22시) and Tomorrow (00시) */}
+            <div
+              style={{
+                position: 'absolute',
+                top: 0,
+                bottom: 24,
+                left: `calc(${dividerPercent}% - 6px)`,
+                borderLeft: '1.5px dashed #94a3b8',
+                zIndex: 1,
+                pointerEvents: 'none'
+              }}
+            />
+
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={chartData.filter((_, i) => i % 2 === 0)} margin={{ top: 8, right: 4, left: -25, bottom: 0 }}>
+              <BarChart data={chartData} margin={{ top: 8, right: 6, left: -25, bottom: 0 }}>
                 <XAxis
-                  dataKey="displayTime"
+                  dataKey="hour"
                   stroke="#cbd5e1"
-                  tick={{ fill: '#64748b', fontSize: 10, fontFamily: 'var(--font-mono)' }}
+                  tick={({ x, y, payload, index }) => {
+                    // Look up by exact index so tomorrow's 22시 is NOT highlighted
+                    const isNow = chartData[index]?.isNow;
+                    return (
+                      <text
+                        x={x}
+                        y={y + 12}
+                        textAnchor="middle"
+                        fill={isNow ? '#f36458' : '#64748b'}
+                        fontSize={9.5}
+                        fontWeight={isNow ? 700 : 500}
+                        fontFamily="var(--font-sans)"
+                      >
+                        {payload.value}
+                      </text>
+                    );
+                  }}
                   axisLine={{ stroke: '#e2e8f0' }}
                   tickLine={false}
+                  interval={0}
                 />
                 <Tooltip
                   cursor={{ fill: 'rgba(0, 0, 0, 0.03)' }}
@@ -166,16 +222,17 @@ export const RainForecastCard: React.FC<Props> = ({
                             boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
                             padding: '6px 10px',
                             borderRadius: '6px',
-                            fontSize: '11px'
+                            fontSize: '11px',
+                            fontFamily: 'var(--font-sans)'
                           }}
                         >
-                          <div style={{ color: '#64748b', marginBottom: '2px' }}>
-                            {data.isToday ? '오늘' : '내일'} {data.hour}
+                          <div style={{ color: '#64748b', marginBottom: '2px', fontWeight: 600 }}>
+                            {data.isNow ? '● 지금 실시간' : data.isToday ? '오늘' : '내일'} {data.hour}
                           </div>
                           <div style={{ color: '#0284c7', fontWeight: 700 }}>
                             강수확률: {data.rainProb}%
                           </div>
-                          <div style={{ color: '#1e293b' }}>
+                          <div style={{ color: '#1e293b', fontWeight: 500 }}>
                             기온: {data.temp}°C
                           </div>
                         </div>
@@ -184,14 +241,15 @@ export const RainForecastCard: React.FC<Props> = ({
                     return null;
                   }}
                 />
-                <ReferenceLine y={50} stroke="#f36458" strokeDasharray="3 3" opacity={0.6} />
+                <ReferenceLine y={50} stroke="#f36458" strokeDasharray="3 3" opacity={0.5} />
                 <Bar dataKey="rainProb" radius={[2, 2, 0, 0]}>
-                  {chartData.filter((_, i) => i % 2 === 0).map((entry, index) => (
-                    <Cell
-                      key={`cell-${index}`}
-                      fill={entry.rainProb >= 50 ? '#0284c7' : entry.rainProb >= 20 ? '#38bdf8' : '#e2e8f0'}
-                    />
-                  ))}
+                  {chartData.map((entry, index) => {
+                    let barFill = entry.rainProb >= 50 ? '#0284c7' : entry.rainProb >= 20 ? '#38bdf8' : '#e2e8f0';
+                    if (entry.isNow) {
+                      barFill = '#f36458'; // Coral Red Highlight strictly for today's 22:00
+                    }
+                    return <Cell key={`cell-${index}`} fill={barFill} />;
+                  })}
                 </Bar>
               </BarChart>
             </ResponsiveContainer>

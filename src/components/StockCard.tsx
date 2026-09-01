@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { STOCK_DATA, StockItem } from '../data/stockData';
-import { TrendingUp, TrendingDown, Activity } from 'lucide-react';
+import { fetchAllStocks } from '../services/stockService';
+import { useLocalStorage } from '../hooks/useLocalStorage';
+import { TrendingUp, TrendingDown, Activity, RefreshCw } from 'lucide-react';
 import {
   ResponsiveContainer,
   AreaChart,
@@ -12,15 +14,38 @@ import {
 
 type PeriodType = '1D' | '1W' | '1M' | '1Y';
 
-export const StockCard: React.FC = () => {
-  const stockKeys = Object.keys(STOCK_DATA);
-  const [selectedKey, setSelectedKey] = useState<string>('KOSPI');
-  const [period, setPeriod] = useState<PeriodType>('1D');
+const STOCK_ORDER = ['KOSPI', 'KOSDAQ', 'SPX', 'IXIC', 'TLT', 'GOLD', 'BTC'];
 
-  const currentStock: StockItem = STOCK_DATA[selectedKey] || STOCK_DATA['KOSPI'];
+export const StockCard: React.FC = () => {
+  const [stocks, setStocks] = useState<Record<string, StockItem>>(STOCK_DATA);
+  const [loading, setLoading] = useState(false);
+  const [selectedKey, setSelectedKey] = useLocalStorage<string>('browser_home_stock_key', 'KOSPI');
+  const [period, setPeriod] = useLocalStorage<PeriodType>('browser_home_stock_period', '1D');
+
+  const stockKeys = STOCK_ORDER;
+  const currentStock: StockItem = stocks[selectedKey] || stocks['KOSPI'] || STOCK_DATA['KOSPI'];
   const chartPoints = currentStock.history[period] || [];
 
   const chartColor = currentStock.isPositive ? '#ef4444' : '#2563eb';
+
+  const loadStockData = useCallback(async () => {
+    setLoading(true);
+    try {
+      const data = await fetchAllStocks();
+      setStocks(data);
+    } catch (err) {
+      console.warn('Stock fetch error:', err);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    loadStockData();
+    // 5-minute periodic auto-refresh
+    const timer = setInterval(loadStockData, 5 * 60 * 1000);
+    return () => clearInterval(timer);
+  }, [loadStockData]);
 
   return (
     <div className="saniti-card">
@@ -30,24 +55,36 @@ export const StockCard: React.FC = () => {
           <h2 className="card-title">주요 시세 및 지수</h2>
         </div>
 
-        <div className="stock-period-tabs">
-          {(['1D', '1W', '1M', '1Y'] as PeriodType[]).map((p) => (
-            <button
-              key={p}
-              className={`period-btn ${period === p ? 'active' : ''}`}
-              onClick={() => setPeriod(p)}
-            >
-              {p}
-            </button>
-          ))}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <div className="stock-period-tabs">
+            {(['1D', '1W', '1M', '1Y'] as PeriodType[]).map((p) => (
+              <button
+                key={p}
+                className={`period-btn ${period === p ? 'active' : ''}`}
+                onClick={() => setPeriod(p)}
+              >
+                {p}
+              </button>
+            ))}
+          </div>
+
+          <button
+            className="link-action-btn"
+            onClick={loadStockData}
+            title="시세 새로고침"
+            style={{ padding: '4px', marginLeft: '4px' }}
+          >
+            <RefreshCw size={12} className={loading ? 'spin' : ''} />
+          </button>
         </div>
       </div>
 
       <div className="card-body">
-        {/* Symbol Tabs: KOSPI, S&P 500, TLT, GOLD */}
+        {/* Symbol Tabs: KOSPI, KOSDAQ, S&P 500, NASDAQ, TLT, GOLD, BTC */}
         <div className="stock-tabs-scroll" style={{ marginBottom: 'var(--spacing-md)' }}>
           {stockKeys.map((key) => {
-            const stock = STOCK_DATA[key];
+            const stock = stocks[key] || STOCK_DATA[key];
+            if (!stock) return null;
             return (
               <button
                 key={key}
@@ -63,12 +100,12 @@ export const StockCard: React.FC = () => {
         {/* Current Price and Change Header */}
         <div className="stock-price-header">
           <div>
-            <div style={{ fontSize: '12px', color: 'var(--color-slate)', marginBottom: '2px', fontWeight: 500 }}>
+            <div style={{ fontSize: '12px', color: 'var(--color-slate)', marginBottom: '2px', fontWeight: 600 }}>
               {currentStock.name}
             </div>
             <div className="stock-main-price">
               {currentStock.price}
-              <span style={{ fontSize: '13px', color: 'var(--color-slate-soft)', marginLeft: '4px', fontWeight: 400 }}>
+              <span style={{ fontSize: '13px', color: 'var(--color-slate-soft)', marginLeft: '4px', fontWeight: 500 }}>
                 {currentStock.unit}
               </span>
             </div>
@@ -80,10 +117,10 @@ export const StockCard: React.FC = () => {
           </div>
         </div>
 
-        {/* Interactive Stock Chart */}
+        {/* Interactive Stock Chart (Unbroken Complete Labels) */}
         <div style={{ flex: 1, width: '100%', minHeight: '120px', marginTop: '6px' }}>
           <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={chartPoints} margin={{ top: 6, right: 4, left: -25, bottom: 0 }}>
+            <AreaChart data={chartPoints} margin={{ top: 6, right: 12, left: -25, bottom: 0 }}>
               <defs>
                 <linearGradient id={`stockGradient-${selectedKey}`} x1="0" y1="0" x2="0" y2="1">
                   <stop offset="5%" stopColor={chartColor} stopOpacity={0.2} />
@@ -93,9 +130,10 @@ export const StockCard: React.FC = () => {
               <XAxis
                 dataKey="time"
                 stroke="#cbd5e1"
-                tick={{ fill: '#64748b', fontSize: 10, fontFamily: 'var(--font-mono)' }}
+                tick={{ fill: '#64748b', fontSize: 9.5, fontFamily: 'var(--font-sans)', fontWeight: 500 }}
                 axisLine={{ stroke: '#e2e8f0' }}
                 tickLine={false}
+                interval={period === '1M' ? 3 : 0}
               />
               <YAxis
                 domain={['dataMin - 5', 'dataMax + 5']}
@@ -114,10 +152,10 @@ export const StockCard: React.FC = () => {
                           padding: '6px 10px',
                           borderRadius: '6px',
                           fontSize: '11px',
-                          fontFamily: 'var(--font-mono)'
+                          fontFamily: 'var(--font-sans)'
                         }}
                       >
-                        <div style={{ color: '#64748b' }}>{data.time}</div>
+                        <div style={{ color: '#64748b', fontWeight: 500 }}>{data.time}</div>
                         <div style={{ color: chartColor, fontWeight: 700 }}>
                           {data.value.toLocaleString()} {currentStock.unit}
                         </div>

@@ -44,6 +44,9 @@ export const App: React.FC = () => {
 
   useEffect(() => {
     loadWeather();
+    // 15-minute periodic auto-refresh for weather
+    const weatherTimer = setInterval(loadWeather, 15 * 60 * 1000);
+    return () => clearInterval(weatherTimer);
   }, [loadWeather]);
 
   // Bookmark Link Handlers
