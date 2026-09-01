@@ -17,7 +17,7 @@ export const RegionSelectModal: React.FC<Props> = ({
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
 
-  // ESC key listener
+  // ESC 키 닫기 이벤트 리스너
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {

@@ -3,6 +3,14 @@
 모든 주요 변경 사항은 이 문서에 기록됩니다.
 이 프로젝트는 [Semantic Versioning](https://semver.org/lang/ko/)을 따릅니다.
 
+## [1.6.1] - 2026-09-02
+
+### 📝 문서화 및 코드 정돈 (Docs & Cleanup)
+- **전체 소스 코드 및 스타일시트 주석 100% 한글화**:
+  - 컴포넌트(`App.tsx`, `BookmarkModal.tsx`, `LinksHub.tsx`, `RainForecastCard.tsx`, `StockCard.tsx`, `RegionSelectModal.tsx`)
+  - 데이터 및 서비스(`stockData.ts`, `stockService.ts`, `useLocalStorage.ts`)
+  - 스타일시트(`app.css`, `saniti-tokens.css`)
+
 ## [1.6.0] - 2026-09-02
 
 ### 🚀 배포 및 플랫폼 확장 (Platform & Extension)

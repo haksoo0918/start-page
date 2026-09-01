@@ -11,7 +11,7 @@ interface Props {
   onReorderLinks: (newLinks: BookmarkLink[]) => void;
 }
 
-// Resilient Favicon Component with Graceful Fallback
+// 파비콘 로딩 실패 시 대체 배지를 지원하는 컴포넌트
 const FaviconImage: React.FC<{ url: string; title: string }> = ({ url, title }) => {
   const [error, setError] = useState(false);
 
@@ -68,7 +68,7 @@ export const LinksHub: React.FC<Props> = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingLink, setEditingLink] = useState<BookmarkLink | null>(null);
 
-  // Drag and drop state
+  // 드래그 앤 드롭 상태
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
   const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
 
@@ -95,7 +95,7 @@ export const LinksHub: React.FC<Props> = ({
     }
   };
 
-  // Drag and Drop handlers
+  // 드래그 앤 드롭 이벤트 핸들러
   const handleDragStart = (e: React.DragEvent, index: number) => {
     setDraggedIndex(index);
     e.dataTransfer.effectAllowed = 'move';
@@ -111,7 +111,7 @@ export const LinksHub: React.FC<Props> = ({
   };
 
   const handleDragLeave = () => {
-    // Keep dragover active until drop
+    // 드롭될 때까지 드래그오버 상태 유지
   };
 
   const handleDrop = (e: React.DragEvent, dropIndex: number) => {
@@ -211,7 +211,7 @@ export const LinksHub: React.FC<Props> = ({
             );
           })}
 
-          {/* Quick Add Card */}
+          {/* 새 바로가기 추가 카드 */}
           <button
             className="add-link-tile"
             onClick={() => {

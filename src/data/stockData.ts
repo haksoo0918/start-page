@@ -15,12 +15,12 @@ export interface StockItem {
   };
 }
 
-// 1. 1D Labels by Market
+// 1. 시장별 1D 시간축 라벨
 const D1_KR_LABELS = ['09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '15:30'];
 const D1_US_LABELS = ['09:30', '10:30', '11:30', '12:30', '13:30', '14:30', '15:30', '16:00'];
 const D1_CRYPTO_LABELS = ['00:00', '03:00', '06:00', '09:00', '12:00', '15:00', '18:00', '21:00', '24:00'];
 
-// 2. 1W Labels (Business Days for KR/US, 7 Days for Crypto)
+// 2. 1W 주간 라벨 (한국/미국은 최근 5영업일, 가상자산은 최근 7일 기준)
 function getTrailingWeekLabels(isCrypto = false): string[] {
   const dayNames = ['일', '월', '화', '수', '목', '금', '토'];
   const now = new Date();
@@ -45,7 +45,7 @@ function getTrailingWeekLabels(isCrypto = false): string[] {
   return temp.reverse();
 }
 
-// 3. 1M Labels (Daily: Business days for KR/US, 30 days for Crypto)
+// 3. 1M 월간 라벨 (한국/미국은 최근 20영업일, 가상자산은 최근 30일 기준)
 function getTrailingMonthLabels(isCrypto = false): string[] {
   const now = new Date();
   const temp: string[] = [];
@@ -68,7 +68,7 @@ function getTrailingMonthLabels(isCrypto = false): string[] {
   return temp.reverse();
 }
 
-// 4. 1Y Labels (Trailing 12 Months)
+// 4. 1Y 연간 라벨 (최근 12개월 롤링 기준)
 function getTrailingYearLabels(): string[] {
   const labels: string[] = [];
   const now = new Date();
@@ -92,6 +92,7 @@ const M1_CRYPTO_LABELS = getTrailingMonthLabels(true);
 
 const Y1_LABELS = getTrailingYearLabels();
 
+// 시세 등락 파동 생성 헬퍼 함수
 function makeSeries(
   base: number,
   labels: string[],

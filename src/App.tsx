@@ -10,22 +10,22 @@ import { MapPin } from 'lucide-react';
 import './styles/app.css';
 
 export const App: React.FC = () => {
-  // 1. Links Management State
+  // 1. 링크 목록 상태 관리
   const [links, setLinks] = useLocalStorage<BookmarkLink[]>('saniti_links_v1', PRESET_LINKS);
 
-  // 2. Weather & Region State
+  // 2. 날씨 및 지역 상태 관리
   const [selectedRegion, setSelectedRegion] = useLocalStorage<Region>('saniti_region_v1', DEFAULT_REGION);
   const [weather, setWeather] = useState<WeatherData | null>(null);
   const [weatherLoading, setWeatherLoading] = useState(true);
 
-  // Load weather data
+  // 날씨 데이터 로드 함수
   const loadWeather = async (region: Region) => {
     setWeatherLoading(true);
     try {
       const data = await fetchRainWeather(region);
       setWeather(data);
     } catch (e) {
-      console.error('Weather load error:', e);
+      console.error('날씨 데이터 로드 오류:', e);
     } finally {
       setWeatherLoading(false);
     }
@@ -41,7 +41,7 @@ export const App: React.FC = () => {
     setSelectedRegion(region);
   };
 
-  // Link CRUD operations
+  // 링크 CRUD 처리 함수
   const handleAddLink = (newLink: BookmarkLink) => {
     setLinks([...links, newLink]);
   };
@@ -60,7 +60,7 @@ export const App: React.FC = () => {
 
   return (
     <div className="dashboard-container">
-      {/* Saniti Header */}
+      {/* 대시보드 상단 헤더 */}
       <header className="dashboard-header">
         <div className="header-brand">
           <span className="brand-dot" />
@@ -80,9 +80,9 @@ export const App: React.FC = () => {
         </div>
       </header>
 
-      {/* Main Bento Dashboard Grid */}
+      {/* 메인 벤토 대시보드 그리드 */}
       <main className="dashboard-grid">
-        {/* Left Section: 62% Primary Links Hub */}
+        {/* 좌측 영역: 62% 메인 링크 허브 */}
         <LinksHub
           links={links}
           onAddLink={handleAddLink}
@@ -91,9 +91,9 @@ export const App: React.FC = () => {
           onReorderLinks={handleReorderLinks}
         />
 
-        {/* Right Section: 38% Widgets (Rain Forecast & Major Stocks) */}
+        {/* 우측 영역: 38% 위젯 (강수확률 예보 및 주요 시세) */}
         <div className="dashboard-sidebar">
-          {/* Top Widget: Rain Forecast Card */}
+          {/* 상단 위젯: 날씨 및 강수확률 예보 카드 */}
           <RainForecastCard
             weather={weather}
             loading={weatherLoading}
@@ -102,7 +102,7 @@ export const App: React.FC = () => {
             onRefresh={() => loadWeather(selectedRegion)}
           />
 
-          {/* Bottom Widget: 7 Major Asset Stock Card */}
+          {/* 하단 위젯: 7대 주요 자산 시세 카드 */}
           <StockCard />
         </div>
       </main>

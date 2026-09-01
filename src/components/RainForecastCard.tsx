@@ -43,11 +43,11 @@ export const RainForecastCard: React.FC<Props> = ({
   const todayInfo = weather ? getWeatherInfo(weather.today.weatherCode) : { label: '', icon: '' };
   const tomorrowInfo = weather ? getWeatherInfo(weather.tomorrow.weatherCode) : { label: '', icon: '' };
 
-  // 2-hour interval data
+  // 2시간 간격 데이터 (24포인트)
   const rawData = weather?.hourly.filter((_, i) => i % 2 === 0) || [];
   const currentHourNum = new Date().getHours();
 
-  // Find exact index for today's current hour
+  // 오늘의 현재 시간 인덱스 계산
   let todayCurrentIndex = -1;
   let todayCount = 0;
 
@@ -71,7 +71,7 @@ export const RainForecastCard: React.FC<Props> = ({
     };
   });
 
-  // Calculate exact percentage between today (22시) and tomorrow (00시)
+  // 오늘(22시)과 내일(00시) 사이의 구분선 위치 계산
   const dividerPercent = rawData.length > 0 ? (todayCount / rawData.length) * 100 : 50;
 
   return (
@@ -106,9 +106,9 @@ export const RainForecastCard: React.FC<Props> = ({
       </div>
 
       <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-md)' }}>
-        {/* Today vs Tomorrow Rain Highlights (Today Subtly Emphasized) */}
+        {/* 오늘 및 내일 강수확률 요약 (오늘 카드 위계 강조) */}
         <div className="rain-highlight-grid">
-          {/* Today Card (Featured Emphasis) */}
+          {/* 오늘 카드 (주요 강조) */}
           <div
             className="rain-day-card"
             style={{
@@ -153,7 +153,7 @@ export const RainForecastCard: React.FC<Props> = ({
             </div>
           </div>
 
-          {/* Tomorrow Card (Subtle Secondary) */}
+          {/* 내일 카드 (보조 표시) */}
           <div className="rain-day-card">
             <div className="rain-day-header">
               <span style={{ fontSize: '11.5px', color: 'var(--color-slate-soft)', fontWeight: 600, fontFamily: "'Noto Sans KR', sans-serif" }}>
@@ -191,7 +191,7 @@ export const RainForecastCard: React.FC<Props> = ({
           </div>
         </div>
 
-        {/* 48-Hour Rain Probability Timeline Chart */}
+        {/* 48시간 강수확률 시간대별 바 차트 */}
         <div className="rain-chart-container" style={{ flex: 1, minHeight: '130px', display: 'flex', flexDirection: 'column', position: 'relative' }}>
           <div className="rain-chart-header" style={{ marginBottom: '4px' }}>
             <span style={{ fontSize: '11px', fontWeight: 700, color: 'var(--color-slate-soft)', fontFamily: "'Noto Sans KR', sans-serif" }}>
@@ -203,7 +203,7 @@ export const RainForecastCard: React.FC<Props> = ({
           </div>
 
           <div style={{ flex: 1, width: '100%', minHeight: '100px', position: 'relative' }}>
-            {/* Clean Background Vertical Divider Line Exactly Between Today (22시) and Tomorrow (00시) */}
+            {/* 오늘(22시)과 내일(00시) 경계 세로 구분선 */}
             <div
               style={{
                 position: 'absolute',

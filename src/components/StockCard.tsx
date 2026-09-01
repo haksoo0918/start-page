@@ -34,7 +34,7 @@ export const StockCard: React.FC = () => {
       const data = await fetchAllStocks();
       setStocks(data);
     } catch (err) {
-      console.warn('Stock fetch error:', err);
+      console.warn('시세 데이터 로드 실패:', err);
     } finally {
       setLoading(false);
     }
@@ -42,7 +42,7 @@ export const StockCard: React.FC = () => {
 
   useEffect(() => {
     loadStockData();
-    // 5-minute periodic auto-refresh
+    // 5분 주기 실시간 시세 자동 갱신
     const timer = setInterval(loadStockData, 5 * 60 * 1000);
     return () => clearInterval(timer);
   }, [loadStockData]);
@@ -80,7 +80,7 @@ export const StockCard: React.FC = () => {
       </div>
 
       <div className="card-body">
-        {/* Symbol Tabs: KOSPI, KOSDAQ, S&P 500, NASDAQ, TLT, GOLD, BTC */}
+        {/* 종목 탭: KOSPI, KOSDAQ, S&P 500, NASDAQ, TLT, GOLD, BTC */}
         <div className="stock-tabs-scroll" style={{ marginBottom: 'var(--spacing-md)' }}>
           {stockKeys.map((key) => {
             const stock = stocks[key] || STOCK_DATA[key];
@@ -97,7 +97,7 @@ export const StockCard: React.FC = () => {
           })}
         </div>
 
-        {/* Current Price and Change Header */}
+        {/* 현재가 및 등락률 헤더 */}
         <div className="stock-price-header">
           <div>
             <div style={{ fontSize: '12px', color: 'var(--color-slate)', marginBottom: '2px', fontWeight: 600 }}>
@@ -117,7 +117,7 @@ export const StockCard: React.FC = () => {
           </div>
         </div>
 
-        {/* Interactive Stock Chart (Unbroken Complete Labels) */}
+        {/* 반응형 주가 영역 차트 (온전한 시간축 라벨) */}
         <div style={{ flex: 1, width: '100%', minHeight: '120px', marginTop: '6px' }}>
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart data={chartPoints} margin={{ top: 6, right: 12, left: -25, bottom: 0 }}>

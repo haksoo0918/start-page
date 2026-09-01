@@ -32,7 +32,7 @@ export const BookmarkModal: React.FC<Props> = ({
     setFetchingTitle(false);
   }, [editingLink, isOpen]);
 
-  // ESC key listener
+  // ESC 키 닫기 이벤트 리스너
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -47,11 +47,11 @@ export const BookmarkModal: React.FC<Props> = ({
     };
   }, [isOpen, onClose]);
 
-  // Handle URL change with auto title fetch
+  // 주소 입력 및 제목 자동 조회 핸들러
   const handleUrlChange = (newUrl: string) => {
     setUrl(newUrl);
 
-    // If editing existing link with user-set title, do not overwrite unless title is empty
+    // 기존 링크 수정 중 사용자가 입력한 제목이 있는 경우 빈칸이 아니면 덮어쓰지 않음
     if (editingLink && title.trim()) return;
 
     if (debounceTimerRef.current) {
@@ -68,7 +68,7 @@ export const BookmarkModal: React.FC<Props> = ({
             setTitle(autoTitle);
           }
         } catch {
-          // ignore
+          // 조회 실패 시 무시
         } finally {
           setFetchingTitle(false);
         }
@@ -112,7 +112,7 @@ export const BookmarkModal: React.FC<Props> = ({
           </div>
 
           <div className="modal-body" style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-            {/* 1. Website URL (Top Priority with Auto-Focus) */}
+            {/* 1. 웹사이트 주소 (URL, 1순위 자동 포커스) */}
             <div className="form-group">
               <label className="form-label" style={{ fontFamily: "'Noto Sans KR', sans-serif" }}>
                 웹사이트 주소 (URL)
@@ -129,7 +129,7 @@ export const BookmarkModal: React.FC<Props> = ({
               />
             </div>
 
-            {/* 2. Site Name (Auto-Fetched with manual override) */}
+            {/* 2. 사이트 이름 (자동 완성 및 수동 수정 가능) */}
             <div className="form-group">
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
                 <label className="form-label" style={{ margin: 0, fontFamily: "'Noto Sans KR', sans-serif" }}>

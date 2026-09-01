@@ -1,6 +1,6 @@
 import { STOCK_DATA, StockItem } from '../data/stockData';
 
-// Yahoo Finance Ticker Mapping for 7 assets
+// 7대 자산의 Yahoo Finance 티커 매핑
 const TICKER_MAP: Record<string, string> = {
   'KOSPI': '^KS11',
   'KOSDAQ': '^KQ11',
@@ -11,6 +11,9 @@ const TICKER_MAP: Record<string, string> = {
   'BTC': 'BTC-USD'
 };
 
+/**
+ * 개별 종목의 실시간 시세 및 1D 차트 데이터를 조회합니다.
+ */
 export async function fetchStockData(symbolKey: string): Promise<StockItem> {
   const fallback = STOCK_DATA[symbolKey] || STOCK_DATA['KOSPI'];
   const ticker = TICKER_MAP[symbolKey];
@@ -26,7 +29,7 @@ export async function fetchStockData(symbolKey: string): Promise<StockItem> {
     const result = data?.chart?.result?.[0];
 
     if (!result || !result.meta) {
-      throw new Error('Invalid chart data format');
+      throw new Error('올바르지 않은 차트 데이터 형식입니다');
     }
 
     const meta = result.meta;
@@ -36,7 +39,7 @@ export async function fetchStockData(symbolKey: string): Promise<StockItem> {
     const changePercent = (change / previousClose) * 100;
     const isPositive = change >= 0;
 
-    // Parse 1D timestamps & quotes (30-min interval, ~14 points)
+    // 1D 타임스탬프 및 시세 데이터 가공 (30분 간격, 약 14포인트)
     const timestamps: number[] = result.timestamp || [];
     const quotes: number[] = result.indicators?.quote?.[0]?.close || [];
     const history1D: { time: string; value: number }[] = [];
@@ -52,7 +55,7 @@ export async function fetchStockData(symbolKey: string): Promise<StockItem> {
       }
     }
 
-    // Format price
+    // 가격 포맷팅 (달러 표기 등)
     let formattedPrice = currentPrice.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     if (symbolKey === 'TLT' || symbolKey === 'GOLD' || symbolKey === 'BTC') {
       formattedPrice = `$${formattedPrice}`;
@@ -70,11 +73,14 @@ export async function fetchStockData(symbolKey: string): Promise<StockItem> {
       }
     };
   } catch (err) {
-    // Graceful fallback to pre-calculated balanced dataset
+    // API 호출 실패 시 사전 계산된 Mock 데이터로 안전한 Fallback
     return fallback;
   }
 }
 
+/**
+ * 7대 전체 자산 시세를 병렬로 조회합니다.
+ */
 export async function fetchAllStocks(): Promise<Record<string, StockItem>> {
   const keys = Object.keys(STOCK_DATA);
   const results: Record<string, StockItem> = {};

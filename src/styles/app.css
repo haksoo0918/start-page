@@ -1,6 +1,6 @@
 @import './saniti-tokens.css';
 
-/* Spinner Rotation Keyframes */
+/* 스피너 회전 키프레임 애니메이션 */
 @keyframes spin {
   from {
     transform: rotate(0deg);
@@ -15,7 +15,7 @@
   display: inline-block;
 }
 
-/* App Container (Strict 100vh Fixed Layout without Window Scroll) */
+/* 앱 컨테이너 (창 스크롤 없는 엄격한 100vh 고정 레이아웃) */
 .dashboard-container {
   max-width: 1840px;
   width: 100%;
@@ -30,7 +30,7 @@
   overflow: hidden; /* 절대 창 스크롤 생기지 않음 */
 }
 
-/* Header Bar */
+/* 대시보드 상단 헤더 바 */
 .dashboard-header {
   display: flex;
   align-items: center;
@@ -72,7 +72,7 @@
   font-family: var(--font-sans);
 }
 
-/* Main Bento Grid Layout (62% Left vs 38% Right) */
+/* 메인 벤토 그리드 레이아웃 (좌측 62% vs 우측 38%) */
 .dashboard-grid {
   display: grid;
   grid-template-columns: 1.55fr 1fr;
@@ -83,7 +83,7 @@
   align-items: stretch;
 }
 
-/* Card Base (Saniti Light Card Style) */
+/* 기본 카드 스타일 (Saniti Light 카드) */
 .saniti-card {
   background-color: var(--color-canvas-card);
   border: 1px solid var(--color-hairline);
@@ -127,7 +127,7 @@
   flex-direction: column;
 }
 
-/* Right Column Stack */
+/* 우측 위젯 스택 */
 .dashboard-sidebar {
   display: flex;
   flex-direction: column;
@@ -141,7 +141,7 @@
   min-height: 0;
 }
 
-/* ==================== LINKS HUB SECTION ==================== */
+/* ==================== 링크 허브 영역 ==================== */
 .links-section {
   display: flex;
   flex-direction: column;
@@ -157,7 +157,7 @@
   min-height: 0;
 }
 
-/* 5-Column Grid */
+/* 5열 링크 그리드 */
 .links-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
@@ -288,7 +288,7 @@
   width: 100%;
 }
 
-/* Add Link Button Tile */
+/* 바로가기 추가 버튼 타일 */
 .add-link-tile {
   display: flex;
   flex-direction: column;
@@ -312,7 +312,7 @@
   background-color: var(--color-canvas-soft);
 }
 
-/* ==================== RAIN FORECAST CARD ==================== */
+/* ==================== 날씨 및 강수확률 예보 카드 ==================== */
 .weather-location-btn {
   display: flex;
   align-items: center;
@@ -453,7 +453,7 @@
   font-family: var(--font-sans);
 }
 
-/* ==================== STOCK MARKET CARD ==================== */
+/* ==================== 주요 시세 카드 ==================== */
 .stock-tabs-scroll {
   display: flex;
   align-items: center;
@@ -550,7 +550,7 @@
   color: var(--color-ink);
 }
 
-/* ==================== MODALS & INPUTS ==================== */
+/* ==================== 모달 및 입력 폼 ==================== */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -693,7 +693,7 @@
   background-color: var(--color-canvas-soft);
 }
 
-/* Region Search List in Modal */
+/* 모달 내 지역 검색 목록 */
 .region-search-list {
   max-height: 220px;
   overflow-y: auto;
@@ -718,7 +718,7 @@
   color: var(--color-ink);
 }
 
-/* ==================== COMPACT SCREEN GUARDS ==================== */
+/* ==================== 반응형 화면 분기 ==================== */
 @media (max-width: 1280px) {
   .dashboard-container {
     padding: 10px 14px;

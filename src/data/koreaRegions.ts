@@ -7,7 +7,7 @@ export interface Region {
 }
 
 export const KOREA_REGIONS: Region[] = [
-  // 경기 고양시 (사용자 주요 관심지 일산 포함)
+  // 경기도 고양시 (구 단위 세분화)
   { id: 'ilsan-east', name: '고양시 일산동구', fullName: '경기도 고양시 일산동구', lat: 37.6584, lng: 126.7725 },
   { id: 'ilsan-west', name: '고양시 일산서구', fullName: '경기도 고양시 일산서구', lat: 37.6788, lng: 126.7538 },
   { id: 'deokyang', name: '고양시 덕양구', fullName: '경기도 고양시 덕양구', lat: 37.6374, lng: 126.8329 },
@@ -49,4 +49,4 @@ export const KOREA_REGIONS: Region[] = [
   { id: 'seogwipo', name: '서귀포시', fullName: '제주특별자치도 서귀포시', lat: 33.2541, lng: 126.5601 }
 ];
 
-export const DEFAULT_REGION: Region = KOREA_REGIONS[0]; // 고양시 일산동구
+export const DEFAULT_REGION: Region = KOREA_REGIONS[0]; // 최초 실행 시 사용할 기본 지역
