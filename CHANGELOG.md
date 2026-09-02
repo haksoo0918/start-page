@@ -3,6 +3,16 @@
 모든 주요 변경 사항은 이 문서에 기록됩니다.
 이 프로젝트는 [Semantic Versioning](https://semver.org/lang/ko/)을 따릅니다.
 
+## [1.6.4] - 2026-09-02
+
+### 🧹 코드 최적화 및 잔여물 정리 (Cleanup & Refactor)
+- **미사용 스크래핑 유틸리티 제거 (`urlHelper.ts`)**:
+  - 제목 자동 파싱 제거에 따라 불필요해진 `fetchPageTitle`, `extractTitleFromHtml` 등 미사용 함수 삭제
+- **단위 테스트 최적화 (`urlHelper.test.ts`)**:
+  - `normalizeUrl` 핵심 무결성 검증으로 정돈
+- **미사용 CSS 선택자 삭제 (`app.css`)**:
+  - 삭제된 헤더 상태 문구용 `.header-status` 스타일 제거
+
 ## [1.6.3] - 2026-09-02
 
 ### 🛡️ 안정성 및 UX 개선 (Bug Fix & UX)
