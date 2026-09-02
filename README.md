@@ -2,27 +2,21 @@
 
 데스크톱 브라우저를 열었을 때 **자주 가는 링크(60% 메인)** 를 중심으로, **상세 지역의 날씨/강수확률 예보** 와 **7대 핵심 시장 시세(KOSPI, KOSDAQ, S&P 500, NASDAQ, TLT, GOLD, BTC)** 를 한눈에 볼 수 있는 깔끔하고 정갈한 개인화 대시보드입니다.
 
----
-
 ## 🌐 접속 주소 (GitHub Pages)
 
 - 🔗 **대시보드 바로가기**: **[https://haksoo0918.github.io/start-page/](https://haksoo0918.github.io/start-page/)**
 
----
-
 ## 🛠️ 브라우저 홈(시작 페이지)으로 설정하는 2가지 방법
 
----
+### 🌟 [방법 1] GitHub Pages 웹 주소로 설정하기 (가장 추천)
 
-### 🌟 [방법 1] GitHub Pages 웹 주소로 설정하기 (가장 추천: 컴퓨터 켤 때마다 서버 실행 불필요)
-
-어떤 PC나 브라우저에서도 URL 하나로 24시간 365일 언제나 즉시 열리는 가장 깔끔한 방식입니다.
+컴퓨터를 켤 때마다 로컬 서버를 실행할 필요 없이 언제나 즉시 열리는 방식입니다.
 
 #### 1단계: GitHub Pages 1회 활성화 (최초 1회만 진행)
 1. **[https://github.com/haksoo0918/start-page](https://github.com/haksoo0918/start-page)** 접속
 2. 상단 **[Settings]** ➔ 좌측 메뉴 **[Pages]** 클릭
 3. **`Build and deployment`** 항목의 **Source** 를 **`GitHub Actions`** 로 선택
-   ➔ 설정 후 1~2분 뒤 자동으로 배포가 완료됩니다.
+   (설정 후 1~2분 뒤 자동으로 배포가 완료됩니다)
 
 #### 2단계: 브라우저 시작 페이지에 등록
 - **Chrome (크롬)**:
@@ -35,8 +29,6 @@
 
 > 💡 **새 탭(`Ctrl + T`)을 열 때마다 이 화면이 뜨게 하려면?**
 > 크롬 웹스토어에서 무료 공식 확장 프로그램인 **[New Tab Redirect]** 설치 후, 주소 칸에 `https://haksoo0918.github.io/start-page/`를 넣으시면 새 탭을 누를 때마다 이 시작 페이지가 0초 만에 열립니다.
-
----
 
 ### 🚀 [방법 2] 크롬 확장 프로그램으로 등록하기 (로컬 / 오프라인 네이티브 새 탭)
 
@@ -57,8 +49,6 @@ npm run build
 4. 빌드된 **`dist` 폴더** 선택 (`c:\Users\hakso\_work\browser-home\dist`)
 5. 완료! 이제 새 탭(`Ctrl + T`)을 열면 대시보드가 네이티브로 즉시 열립니다.
 
----
-
 ## ✨ 주요 기능 명세
 
 1. 🔗 **자주 가는 링크 허브 (Main 62%)**
@@ -76,8 +66,6 @@ npm run build
 
 4. 🌿 **Saniti Light 미니멀 디자인**
    - 100vh 무스크롤 고정 뷰, Google Noto Sans KR 100% 폰트 일원화
-
----
 
 ## 🧪 로컬 개발 및 단위 테스트 (TDD)
 

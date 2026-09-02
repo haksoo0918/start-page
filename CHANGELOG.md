@@ -3,6 +3,14 @@
 모든 주요 변경 사항은 이 문서에 기록됩니다.
 이 프로젝트는 [Semantic Versioning](https://semver.org/lang/ko/)을 따릅니다.
 
+## [1.7.2] - 2026-09-02
+
+### ⚙️ CI/CD 및 문서 정돈 (CI/CD & Docs)
+- **GitHub Actions Node.js 24 최신 런타임 적용**:
+  - `.github/workflows/deploy.yml`에서 Node.js 버전을 24로 올려 러너 만료(Deprecation) 경고 완전 해소
+- **[README.md](README.md) 가독성 개선**:
+  - 과도하게 남발되었던 가로줄(`---`)을 대폭 축소하고 깔끔한 소제목 위계로 정돈
+
 ## [1.7.1] - 2026-09-02
 
 ### 📖 문서화 완성 (Docs)
