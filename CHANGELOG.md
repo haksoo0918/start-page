@@ -3,6 +3,14 @@
 모든 주요 변경 사항은 이 문서에 기록됩니다.
 이 프로젝트는 [Semantic Versioning](https://semver.org/lang/ko/)을 따릅니다.
 
+## [1.7.0] - 2026-09-02
+
+### 🌐 배포 및 플랫폼 확장 (Deployment & CI/CD)
+- **GitHub Pages 무료 호스팅 배포 지원**:
+  - `vite.config.ts` 상대 경로(`base: './'`) 설정을 적용하여 서브 경로에서도 JS/CSS 에셋 무결성 보장
+  - `.github/workflows/deploy.yml` GitHub Actions 자동 배포 파이프라인 구축 (main 브랜치 Push 시 자동 빌드 및 Pages 배포)
+  - `README.md`에 배포 접속 주소(`https://haksoo0918.github.io/start-page/`) 및 브라우저 시작페이지 설정 안내 반영
+
 ## [1.6.4] - 2026-09-02
 
 ### 🧹 코드 최적화 및 잔여물 정리 (Cleanup & Refactor)

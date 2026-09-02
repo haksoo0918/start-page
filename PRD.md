@@ -5,23 +5,20 @@
 
 ---
 
-## 2. 변경 요구사항: 미사용 잔여 코드(Dead Code) 전면 정리 및 무결성 확보
+## 2. 변경 요구사항: GitHub Pages 무료 호스팅 배포 및 CI/CD 자동화
 
-### 2.1 조사된 미사용 잔여 코드 및 정리 항목
-1. **`src/utils/urlHelper.ts`**:
-   - 제목 자동완성 기능 제거에 따라 불필요해진 `fetchPageTitle`, `extractTitleFromHtml`, `cleanTitle` 비동기 스크래핑 잔여 코드 삭제.
-   - 핵심 `normalizeUrl` 유틸리티만 남겨 번들 크기 경량화 및 코드 단순화.
-2. **`src/utils/urlHelper.test.ts`**:
-   - 삭제된 함수 테스트를 정리하고 실제 사용 중인 `normalizeUrl` 무결성 검증으로 최적화.
-3. **`src/styles/app.css`**:
-   - 헤더 우측 상태 문구 삭제로 인해 더 이상 사용되지 않는 `.header-status` CSS 클래스 제거.
-4. **`public/manifest.json`**:
-   - `version`을 최신 버전(`1.6.2`)으로 동기화.
+### 2.1 GitHub Pages 배포 지원
+- **목적**: 로컬 서버를 켜지 않고도 브라우저 시작 페이지로 영구 사용할 수 있는 나만의 고유 웹 주소(`https://haksoo0918.github.io/start-page/`) 제공.
+- **사양**:
+  - `vite.config.ts`에 `base: './'` 설정 적용 (서브 디렉토리 에셋 상대 경로 보장)
+  - `.github/workflows/deploy.yml` GitHub Actions 워크플로우 구성 (Push 시 자동 빌드 및 Pages 배포)
+  - `README.md`에 GitHub Pages 배포 설정 및 브라우저 시작페이지 등록 가이드 최신화
 
 ---
 
 ## 3. 진행 절차
-1. **PRD 및 계획서 업데이트** (현재 단계)
-2. **사용자 승인 확인** 
-3. **잔여 코드 삭제 및 정돈 적용** 
-4. **단위 테스트 및 빌드 검증** 
+1. **PRD 및 계획서 작성** (완료)
+2. **`vite.config.ts` 상대 경로(`base: './'`) 적용** 
+3. **`.github/workflows/deploy.yml` GitHub Actions 구성** 
+4. **`README.md` 업데이트** 
+5. **단위 테스트 및 빌드 검증** 
