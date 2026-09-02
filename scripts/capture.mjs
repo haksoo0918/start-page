@@ -18,6 +18,14 @@ async function capture() {
     fullPage: false
   });
 
+  // 모달 열기 및 캡쳐
+  await page.click('.add-link-tile');
+  await new Promise(r => setTimeout(r, 400));
+  await page.screenshot({
+    path: 'C:/Users/hakso/.gemini/antigravity/brain/b3298707-ef7c-40c7-a2e9-e61e72aa9692/screenshot_modal.png',
+    fullPage: false
+  });
+
   await browser.close();
   console.log('SCREENSHOT_CAPTURED_SUCCESSFULLY');
 }

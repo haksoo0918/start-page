@@ -5,24 +5,23 @@
 
 ---
 
-## 2. 변경 요구사항: 크롬 확장 프로그램 CORS 방어 및 host_permissions 권한 부여
+## 2. 변경 요구사항: 미사용 잔여 코드(Dead Code) 전면 정리 및 무결성 확보
 
-### 2.1 문제 정의
-- `chrome-extension://` 오리진 환경에서 Yahoo Finance 시세 API 호출 시 `host_permissions` 부재로 인한 CORS 차단 에러 발생.
-
-### 2.2 해결 방안
-- `public/manifest.json`에 `host_permissions` 명시:
-  - `"https://query1.finance.yahoo.com/*"`
-  - `"https://api.open-meteo.com/*"`
-  - `"https://api.binance.com/*"`
-  - `"https://api.microlink.io/*"`
-  - `"https://*/*"`
-- 크롬 확장 프로그램이 외부 시세, 날씨, 타이틀 조회 API와 CORS 제약 없이 자유롭고 안전하게 통신하도록 보장.
+### 2.1 조사된 미사용 잔여 코드 및 정리 항목
+1. **`src/utils/urlHelper.ts`**:
+   - 제목 자동완성 기능 제거에 따라 불필요해진 `fetchPageTitle`, `extractTitleFromHtml`, `cleanTitle` 비동기 스크래핑 잔여 코드 삭제.
+   - 핵심 `normalizeUrl` 유틸리티만 남겨 번들 크기 경량화 및 코드 단순화.
+2. **`src/utils/urlHelper.test.ts`**:
+   - 삭제된 함수 테스트를 정리하고 실제 사용 중인 `normalizeUrl` 무결성 검증으로 최적화.
+3. **`src/styles/app.css`**:
+   - 헤더 우측 상태 문구 삭제로 인해 더 이상 사용되지 않는 `.header-status` CSS 클래스 제거.
+4. **`public/manifest.json`**:
+   - `version`을 최신 버전(`1.6.2`)으로 동기화.
 
 ---
 
 ## 3. 진행 절차
 1. **PRD 및 계획서 업데이트** (현재 단계)
 2. **사용자 승인 확인** 
-3. **public/manifest.json host_permissions 추가 및 빌드** 
-4. **확장 프로그램 새로고침 후 통신 정상화 확인** 
+3. **잔여 코드 삭제 및 정돈 적용** 
+4. **단위 테스트 및 빌드 검증** 

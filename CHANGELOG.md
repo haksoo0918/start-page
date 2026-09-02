@@ -3,6 +3,14 @@
 모든 주요 변경 사항은 이 문서에 기록됩니다.
 이 프로젝트는 [Semantic Versioning](https://semver.org/lang/ko/)을 따릅니다.
 
+## [1.6.3] - 2026-09-02
+
+### 🛡️ 안정성 및 UX 개선 (Bug Fix & UX)
+- **모달 내부 텍스트 드래그 시 닫힘 버그 수정**:
+  - `BookmarkModal.tsx` 및 `RegionSelectModal.tsx`의 오버레이 닫기 핸들러를 `onMouseDown` + `e.target === e.currentTarget`으로 변경하여 인풋창 내 텍스트 드래그 시 모달이 닫히는 현상 원천 차단
+- **제목 자동완성 기능 제거 및 폼 간소화**:
+  - 대기 시간을 유발하던 외부 API 비동기 파싱, debounce 타이머, 스피너를 제거하고 가볍고 즉각적인 직접 입력 폼으로 전환
+
 ## [1.6.2] - 2026-09-02
 
 ### ⚡ UX 및 디자인 정돈 (UX & Cleanup)

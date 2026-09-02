@@ -41,7 +41,15 @@ export const RegionSelectModal: React.FC<Props> = ({
   );
 
   return (
-    <div className="modal-overlay" onClick={onClose}>
+    <div
+      className="modal-overlay"
+      onMouseDown={(e) => {
+        // 모달 외부 배경을 직접 클릭했을 때만 닫기 (인풋창 텍스트 드래그 시 닫힘 방어)
+        if (e.target === e.currentTarget) {
+          onClose();
+        }
+      }}
+    >
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>

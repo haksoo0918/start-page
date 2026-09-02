@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BookmarkLink } from '../data/presetLinks';
-import { normalizeUrl, fetchPageTitle } from '../utils/urlHelper';
-import { X, Globe, Loader2, Sparkles } from 'lucide-react';
+import { normalizeUrl } from '../utils/urlHelper';
+import { X, Globe } from 'lucide-react';
 
 interface Props {
   isOpen: boolean;
@@ -18,8 +18,6 @@ export const BookmarkModal: React.FC<Props> = ({
 }) => {
   const [url, setUrl] = useState('');
   const [title, setTitle] = useState('');
-  const [fetchingTitle, setFetchingTitle] = useState(false);
-  const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     if (editingLink) {
@@ -29,7 +27,6 @@ export const BookmarkModal: React.FC<Props> = ({
       setUrl('');
       setTitle('');
     }
-    setFetchingTitle(false);
   }, [editingLink, isOpen]);
 
   // ESC 키 닫기 이벤트 리스너
@@ -47,35 +44,6 @@ export const BookmarkModal: React.FC<Props> = ({
     };
   }, [isOpen, onClose]);
 
-  // 주소 입력 및 제목 자동 조회 핸들러
-  const handleUrlChange = (newUrl: string) => {
-    setUrl(newUrl);
-
-    // 기존 링크 수정 중 사용자가 입력한 제목이 있는 경우 빈칸이 아니면 덮어쓰지 않음
-    if (editingLink && title.trim()) return;
-
-    if (debounceTimerRef.current) {
-      clearTimeout(debounceTimerRef.current);
-    }
-
-    const trimmed = newUrl.trim();
-    if (trimmed.length > 3 && (trimmed.includes('.') || trimmed.startsWith('http'))) {
-      debounceTimerRef.current = setTimeout(async () => {
-        setFetchingTitle(true);
-        try {
-          const autoTitle = await fetchPageTitle(trimmed);
-          if (autoTitle) {
-            setTitle(autoTitle);
-          }
-        } catch {
-          // 조회 실패 시 무시
-        } finally {
-          setFetchingTitle(false);
-        }
-      }, 400);
-    }
-  };
-
   if (!isOpen) return null;
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -83,6 +51,7 @@ export const BookmarkModal: React.FC<Props> = ({
     const cleanUrl = normalizeUrl(url);
     if (!cleanUrl) return;
 
+    // 제목이 비어있을 경우 도메인명으로 자동 대체
     const finalTitle = title.trim() || cleanUrl.replace(/^https?:\/\//, '').split('/')[0];
 
     onSave({
@@ -96,7 +65,15 @@ export const BookmarkModal: React.FC<Props> = ({
   };
 
   return (
-    <div className="modal-overlay" onClick={onClose}>
+    <div
+      className="modal-overlay"
+      onMouseDown={(e) => {
+        // 모달 외부 배경을 직접 클릭했을 때만 닫기 (인풋창 텍스트 드래그 시 닫힘 방어)
+        if (e.target === e.currentTarget) {
+          onClose();
+        }
+      }}
+    >
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <form onSubmit={handleSubmit}>
           <div className="modal-header">
@@ -112,7 +89,7 @@ export const BookmarkModal: React.FC<Props> = ({
           </div>
 
           <div className="modal-body" style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-            {/* 1. 웹사이트 주소 (URL, 1순위 자동 포커스) */}
+            {/* 웹사이트 주소 (URL) */}
             <div className="form-group">
               <label className="form-label" style={{ fontFamily: "'Noto Sans KR', sans-serif" }}>
                 웹사이트 주소 (URL)
@@ -122,36 +99,22 @@ export const BookmarkModal: React.FC<Props> = ({
                 className="form-input"
                 placeholder="예: naver.com, https://github.com"
                 value={url}
-                onChange={(e) => handleUrlChange(e.target.value)}
+                onChange={(e) => setUrl(e.target.value)}
                 required
                 autoFocus
                 style={{ fontFamily: "'Noto Sans KR', sans-serif" }}
               />
             </div>
 
-            {/* 2. 사이트 이름 (자동 완성 및 수동 수정 가능) */}
+            {/* 사이트 이름 */}
             <div className="form-group">
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
-                <label className="form-label" style={{ margin: 0, fontFamily: "'Noto Sans KR', sans-serif" }}>
-                  사이트 이름
-                </label>
-                {fetchingTitle && (
-                  <span style={{ fontSize: '11px', color: 'var(--color-brand)', display: 'flex', alignItems: 'center', gap: '3px' }}>
-                    <Loader2 size={11} className="spin" />
-                    <span>제목 가져오는 중...</span>
-                  </span>
-                )}
-                {!fetchingTitle && title && !editingLink && (
-                  <span style={{ fontSize: '11px', color: 'var(--color-slate-soft)', display: 'flex', alignItems: 'center', gap: '2px' }}>
-                    <Sparkles size={11} color="var(--color-brand)" />
-                    <span>자동 완성됨</span>
-                  </span>
-                )}
-              </div>
+              <label className="form-label" style={{ fontFamily: "'Noto Sans KR', sans-serif" }}>
+                사이트 이름
+              </label>
               <input
                 type="text"
                 className="form-input"
-                placeholder="주소를 입력하면 자동으로 채워집니다"
+                placeholder="예: 네이버, 깃허브 (비워두면 주소로 대체)"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 style={{ fontFamily: "'Noto Sans KR', sans-serif" }}
