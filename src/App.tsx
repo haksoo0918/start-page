@@ -6,7 +6,6 @@ import { PRESET_LINKS, BookmarkLink } from './data/presetLinks';
 import { DEFAULT_REGION, Region } from './data/koreaRegions';
 import { WeatherData, fetchRainWeather } from './services/weatherService';
 import { useLocalStorage } from './hooks/useLocalStorage';
-import { MapPin } from 'lucide-react';
 import './styles/app.css';
 
 export const App: React.FC = () => {
@@ -66,17 +65,6 @@ export const App: React.FC = () => {
           <span className="brand-dot" />
           <h1 className="header-title">STARTPAGE</h1>
           <span className="header-subtitle">DESKTOP DASHBOARD</span>
-        </div>
-
-        <div className="header-status" style={{ fontFamily: "'Noto Sans KR', sans-serif" }}>
-          <span style={{ display: 'flex', alignItems: 'center', gap: '4px', fontFamily: "'Noto Sans KR', sans-serif" }}>
-            <MapPin size={13} color="var(--color-brand)" />
-            <strong style={{ fontFamily: "'Noto Sans KR', sans-serif" }}>{selectedRegion.name}</strong>
-          </span>
-          <span style={{ color: 'var(--color-hairline)' }}>|</span>
-          <span style={{ fontFamily: "'Noto Sans KR', sans-serif" }}>
-            {weather?.today.needUmbrella ? '🌧️ 오늘 비 예보 (우산 필요)' : '☀️ 오늘 비 소식 없음'}
-          </span>
         </div>
       </header>
 

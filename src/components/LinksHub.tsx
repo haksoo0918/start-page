@@ -171,8 +171,6 @@ export const LinksHub: React.FC<Props> = ({
               <a
                 key={link.id}
                 href={link.url}
-                target="_blank"
-                rel="noreferrer"
                 draggable
                 onDragStart={(e) => handleDragStart(e, index)}
                 onDragOver={(e) => handleDragOver(e, index)}
