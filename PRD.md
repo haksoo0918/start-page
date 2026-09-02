@@ -5,20 +5,23 @@
 
 ---
 
-## 2. 변경 요구사항: GitHub Pages 무료 호스팅 배포 및 CI/CD 자동화
+## 2. 변경 요구사항: 종합 README.md 완성 (2가지 홈 설정 가이드 및 배포 안내 완전 복원)
 
-### 2.1 GitHub Pages 배포 지원
-- **목적**: 로컬 서버를 켜지 않고도 브라우저 시작 페이지로 영구 사용할 수 있는 나만의 고유 웹 주소(`https://haksoo0918.github.io/start-page/`) 제공.
-- **사양**:
-  - `vite.config.ts`에 `base: './'` 설정 적용 (서브 디렉토리 에셋 상대 경로 보장)
-  - `.github/workflows/deploy.yml` GitHub Actions 워크플로우 구성 (Push 시 자동 빌드 및 Pages 배포)
-  - `README.md`에 GitHub Pages 배포 설정 및 브라우저 시작페이지 등록 가이드 최신화
+### 2.1 README.md 필수 수록 항목
+1. **[방법 1] GitHub Pages 웹 주소로 브라우저 시작페이지(홈) 설정하기 (가장 추천)**
+   - 배포 주소: `https://haksoo0918.github.io/start-page/`
+   - Chrome / Edge / Whale 브라우저별 시작 페이지 등록 3단계 가이드
+   - GitHub 리포지토리에서 Pages 활성화하는 1회성 설정 안내 (Settings ➔ Pages ➔ GitHub Actions 선택)
+2. **[방법 2] 크롬 확장 프로그램(Manifest V3)으로 등록하기 (오프라인/로컬 새 탭 지원)**
+   - `npm run build` 후 `dist` 폴더를 `chrome://extensions`에 10초 만에 등록하는 단계별 가이드
+3. **새 탭(`Ctrl+T`) 연동 팁**
+   - New Tab Redirect 확장 프로그램을 통한 새 탭 오버라이드 팁
+4. **주요 기능 명세 및 TDD 개발 가이드**
 
 ---
 
 ## 3. 진행 절차
-1. **PRD 및 계획서 작성** (완료)
-2. **`vite.config.ts` 상대 경로(`base: './'`) 적용** 
-3. **`.github/workflows/deploy.yml` GitHub Actions 구성** 
-4. **`README.md` 업데이트** 
-5. **단위 테스트 및 빌드 검증** 
+1. **PRD 작성** (현재 단계 - 오직 PRD.md만 작성)
+2. **사용자 승인 확인** (대기)
+3. **README.md 작성 및 보강** 
+4. **최종 검토 및 커밋 지시 대기** 

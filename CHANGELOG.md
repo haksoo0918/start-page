@@ -3,13 +3,20 @@
 모든 주요 변경 사항은 이 문서에 기록됩니다.
 이 프로젝트는 [Semantic Versioning](https://semver.org/lang/ko/)을 따릅니다.
 
+## [1.7.1] - 2026-09-02
+
+### 📖 문서화 완성 (Docs)
+- **종합 [README.md](README.md) 완성**:
+  - [방법 1] GitHub Pages 웹 주소(`https://haksoo0918.github.io/start-page/`)를 통한 브라우저 홈 설정 가이드 및 GitHub Pages 1회 활성화 단계별 안내
+  - [방법 2] 크롬 확장 프로그램 등록 가이드 (로컬/오프라인 새 탭 오버라이드)
+  - 새 탭(`Ctrl+T`) 단축키 연동 팁 (*New Tab Redirect* 활용)
+
 ## [1.7.0] - 2026-09-02
 
 ### 🌐 배포 및 플랫폼 확장 (Deployment & CI/CD)
 - **GitHub Pages 무료 호스팅 배포 지원**:
   - `vite.config.ts` 상대 경로(`base: './'`) 설정을 적용하여 서브 경로에서도 JS/CSS 에셋 무결성 보장
   - `.github/workflows/deploy.yml` GitHub Actions 자동 배포 파이프라인 구축 (main 브랜치 Push 시 자동 빌드 및 Pages 배포)
-  - `README.md`에 배포 접속 주소(`https://haksoo0918.github.io/start-page/`) 및 브라우저 시작페이지 설정 안내 반영
 
 ## [1.6.4] - 2026-09-02
 
@@ -51,8 +58,6 @@
 - **크롬 확장 프로그램 (Manifest V3) 정식 지원**:
   - `public/manifest.json` 구성을 통해 `dist` 폴더를 Chrome, Edge, Whale 브라우저의 새 탭 확장 프로그램으로 직접 등록 가능 (로컬 서버/터미널 실행 불필요)
   - `host_permissions` 권한 등록을 통해 확장 프로그램 환경에서의 Yahoo Finance 및 외부 API CORS 차단 원천 해결
-- **종합 [README.md](README.md) 가이드 구축**:
-  - 확장 프로그램 10초 등록 가이드 및 Vercel 무료 웹 배포 가이드 수록
 
 ## [1.5.2] - 2026-09-02
 
