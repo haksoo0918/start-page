@@ -3,13 +3,20 @@
 모든 주요 변경 사항은 이 문서에 기록됩니다.
 이 프로젝트는 [Semantic Versioning](https://semver.org/lang/ko/)을 따릅니다.
 
+## [1.7.3] - 2026-09-02
+
+### 📖 문서화 및 시각 자료 완성 (Docs)
+- **대시보드 실제 미리보기 캡쳐 수록 (`docs/screenshot.png`)**:
+  - 실제 구동 화면을 README 상단에 배치하여 프로젝트 직관성 극대화
+- **4대 핵심 기능 상세 명세 및 설정 가이드 완성 (`README.md`)**:
+  - 자주 가는 링크 허브 (62%), 날씨 및 48시간 강수 예보 (38%), 7대 시세, Saniti Light 디자인 명세 복원
+  - GitHub Pages 웹 설정 및 크롬 확장 프로그램 2가지 등록 방법 정돈
+
 ## [1.7.2] - 2026-09-02
 
 ### ⚙️ CI/CD 및 문서 정돈 (CI/CD & Docs)
 - **GitHub Actions Node.js 24 최신 런타임 적용**:
   - `.github/workflows/deploy.yml`에서 Node.js 버전을 24로 올려 러너 만료(Deprecation) 경고 완전 해소
-- **[README.md](README.md) 가독성 개선**:
-  - 과도하게 남발되었던 가로줄(`---`)을 대폭 축소하고 깔끔한 소제목 위계로 정돈
 
 ## [1.7.1] - 2026-09-02
 
