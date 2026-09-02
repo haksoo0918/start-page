@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Startpage Dashboard",
-  "version": "1.7.3",
+  "version": "1.7.4",
   "description": "Clean & Fast Desktop Browser Start Page Dashboard",
   "chrome_url_overrides": {
     "newtab": "index.html"
