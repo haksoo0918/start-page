@@ -277,6 +277,17 @@
   overflow: hidden;
   text-overflow: ellipsis;
   width: 100%;
+  display: block;
+}
+
+.link-url-host {
+  font-weight: 600;
+  color: var(--color-slate);
+}
+
+.link-url-path {
+  font-weight: 400;
+  color: var(--color-mute);
 }
 
 /* 바로가기 추가 버튼 타일 */

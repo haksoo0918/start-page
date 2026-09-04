@@ -72,11 +72,19 @@ export const LinksHub: React.FC<Props> = ({
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
   const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
 
-  const getDomain = (url: string) => {
+  const formatDisplayUrl = (rawUrl: string) => {
     try {
-      return new URL(url).hostname.replace(/^www\./, '');
+      const parsed = new URL(rawUrl.startsWith('http') ? rawUrl : `https://${rawUrl}`);
+      const host = parsed.hostname.replace(/^www\./, '');
+      const path =
+        parsed.pathname === '/' && !parsed.search && !parsed.hash
+          ? ''
+          : `${parsed.pathname}${parsed.search}${parsed.hash}`.replace(/\/$/, '');
+
+      return { host, path };
     } catch {
-      return url;
+      const clean = rawUrl.replace(/^https?:\/\//, '').replace(/^www\./, '');
+      return { host: clean, path: '' };
     }
   };
 
@@ -163,7 +171,7 @@ export const LinksHub: React.FC<Props> = ({
       <div className="links-card-body">
         <div className="links-grid">
           {links.map((link, index) => {
-            const domain = getDomain(link.url);
+            const { host, path } = formatDisplayUrl(link.url);
             const isDragging = draggedIndex === index;
             const isDragOver = dragOverIndex === index;
 
@@ -204,7 +212,10 @@ export const LinksHub: React.FC<Props> = ({
                 </div>
 
                 <div className="link-title" style={{ fontFamily: "'Noto Sans KR', sans-serif" }}>{link.title}</div>
-                <div className="link-url" style={{ fontFamily: "'Noto Sans KR', sans-serif" }}>{domain}</div>
+                <div className="link-url" style={{ fontFamily: "'Noto Sans KR', sans-serif" }}>
+                  <span className="link-url-host">{host}</span>
+                  {path && <span className="link-url-path">{path}</span>}
+                </div>
               </a>
             );
           })}

@@ -3,6 +3,14 @@
 모든 주요 변경 사항은 이 문서에 기록됩니다.
 이 프로젝트는 [Semantic Versioning](https://semver.org/lang/ko/)을 따릅니다.
 
+## [1.8.0] - 2026-09-04
+
+### ✨ 신규 기능 및 UX 개선 (Feature & UX)
+- **바로가기 URL 전체 경로 표시 및 호스트(Host) 볼드 강조**:
+  - `LinksHub.tsx`: `formatDisplayUrl` 파싱을 통해 도메인뿐만 아니라 하위 세부 경로(Path/Query)까지 표시되도록 개선
+  - `app.css`: 호스트(`.link-url-host`)는 `font-weight: 600`으로 또렷하게 굵게 강조하고, 하위 경로(`.link-url-path`)는 `font-weight: 400` 은은한 톤으로 자연스럽게 연결
+  - `text-overflow: ellipsis` 말줄임표 처리를 보장하여 카드 너비를 초과해도 타일 높이나 그리드가 깨지지 않도록 레이아웃 보호
+
 ## [1.7.4] - 2026-09-02
 
 ### 📖 문서화 및 마크다운 정돈 (Docs)
