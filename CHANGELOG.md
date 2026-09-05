@@ -3,6 +3,13 @@
 모든 주요 변경 사항은 이 문서에 기록됩니다.
 이 프로젝트는 [Semantic Versioning](https://semver.org/lang/ko/)을 따릅니다.
 
+## [1.9.1] - 2026-09-05
+
+### 🎨 디자인 및 브랜딩 (Design & Branding)
+- **크롬 확장 프로그램 별(Star) 모양 툴바 아이콘 적용**:
+  - `public/icons/`: Saniti 코랄 포인트 컬러(`#f36458`)의 정갈한 5각 별 아이콘 4개 해상도(16px, 32px, 48px, 128px) 및 SVG 생성
+  - `public/manifest.json`: `icons` 및 `action.default_icon`에 별 아이콘 등록
+
 ## [1.9.0] - 2026-09-05
 
 ### ✨ 신규 기능 (Feature)
