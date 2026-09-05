@@ -3,6 +3,14 @@
 모든 주요 변경 사항은 이 문서에 기록됩니다.
 이 프로젝트는 [Semantic Versioning](https://semver.org/lang/ko/)을 따릅니다.
 
+## [1.9.0] - 2026-09-05
+
+### ✨ 신규 기능 (Feature)
+- **크롬 확장 프로그램 툴바 미니 팝업 바로가기 추가 지원**:
+  - `public/popup.html` 및 `public/popup.js`: 서핑 중 브라우저 툴바의 확장 아이콘 클릭 시 현재 탭의 제목/URL이 자동 채워지는 Saniti Light 스타일 미니 팝업창 제공
+  - `src/hooks/useLocalStorage.ts`: `chrome.storage.local` 및 `chrome.storage.onChanged` 실시간 리스너를 연동하여, 팝업에서 추가한 링크가 이미 열려 있는 대시보드에 새로고침 없이 즉각 반영
+  - `public/manifest.json`: `action` 팝업 및 `activeTab`, `storage` 권한 등록
+
 ## [1.8.0] - 2026-09-04
 
 ### ✨ 신규 기능 및 UX 개선 (Feature & UX)

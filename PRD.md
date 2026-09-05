@@ -1,31 +1,34 @@
 # PRD: 데스크톱 브라우저 시작 페이지 (Desktop Browser Start Page)
 
 ## 1. 개요 및 목표
-데스크톱 브라우저를 켰을 때 **자주 가는 링크(60% 메인)** 를 중심으로, **일산 등 시/군/구 상세 지역의 오늘/내일 날씨 및 강수확률** 과 **7대 핵심 시장 시세(KOSPI, KOSDAQ, S&P 500, NASDAQ, TLT, GOLD, BTC)** 를 한눈에 볼 수 있는 깔끔하고 정갈한 개인화 대시보드를 구축합니다.
+데스크톱 브라우저를 켰을 때 **자주 가는 링크(62% 메인)** 를 중심으로, **일산 등 시/군/구 상세 지역의 오늘/내일 날씨 및 강수확률** 과 **7대 핵심 시장 시세(KOSPI, KOSDAQ, S&P 500, NASDAQ, TLT, GOLD, BTC)** 를 한눈에 볼 수 있는 깔끔하고 정갈한 개인화 대시보드를 구축합니다.
 
 ---
 
-## 2. 변경 요구사항: 바로가기 URL 전체 경로 표시 및 호스트 강조
+## 2. 신규 기능 요구사항: 크롬 툴바 미니 팝업을 통한 '현재 페이지 바로가기 추가'
 
 ### 2.1 요구사항 배경 및 목적
-- 기존에는 바로가기 카드 하단에 도메인(Host)만 표시되어, 세부 경로가 포함된 링크(예: `comic.naver.com/webtoon`, `github.com/trending`)의 전체 URL 맥락을 파악하기 어려웠음.
-- 전체 경로를 표시하되, 카드 레이아웃을 해치지 않도록 말줄임표(`...`)를 적용하고 **도메인(Host) 부분만 굵게(Bold)** 강조하여 가독성을 높임.
+- 사용자가 다른 웹사이트를 둘러보다가 마음에 드는 사이트를 발견했을 때, 주소를 일일이 복사해서 시작페이지를 열고 붙여넣는 번거로움 없이 **브라우저 우측 상단 확장 프로그램 아이콘을 눌러 즉시 시작화면에 바로가기로 등록** 할 수 있도록 지원합니다.
 
-### 2.2 상세 기능 및 UI 사양
-1. **URL 전체 경로 포맷팅**:
-   - `https://`, `http://`, `www.` 프로토콜/접두사는 제거하여 간결함 유지.
-   - 호스트(Host)와 세부 경로(Path/Query)를 분리 파싱.
-2. **시각적 계층화 (Host 볼드 강조)**:
-   - **호스트 (`.link-url-host`)**: `font-weight: 600`, 약간 더 또렷한 톤(`var(--color-slate)`)으로 굵게 강조.
-   - **경로 (`.link-url-path`)**: `font-weight: 400`, 부드러운 톤(`var(--color-mute)`)으로 자연스럽게 연결.
-3. **말줄임표(Ellipsis) 처리**:
-   - 타일 너비를 벗어나는 긴 URL은 `text-overflow: ellipsis; overflow: hidden; white-space: nowrap;`으로 한 줄 내에서 안전하게 말줄임 처리.
+### 2.2 상세 기능 및 UX 사양
+1. **확장 프로그램 액션 팝업 (`popup.html`)**:
+   - 툴바 아이콘 클릭 시 작고 정갈한 Saniti Light 스타일의 미니 팝업창 표시.
+   - `chrome.tabs.query`를 통해 현재 활성화된 탭의 **제목(`tab.title`)** 과 **URL(`tab.url`)** 을 자동으로 가져와 입력 폼에 미리 채움.
+   - 사이트 이름(제목)과 주소를 직접 수정한 뒤 **[추가하기]** 버튼 클릭 가능.
+2. **스토리지 동기화 및 실시간 반영**:
+   - `chrome.storage.local`을 활용하여 팝업에서 추가한 링크를 안전하게 영구 저장.
+   - 새 탭 대시보드(`App.tsx` / `useLocalStorage.ts`)는 `chrome.storage.onChanged` 리스너를 통해 툴바에서 추가된 링크를 **새로고침 없이 실시간으로 즉시 동기화**.
+   - 일반 웹 환경(GitHub Pages 배포본)에서는 기존 `window.localStorage`로 완벽하게 Fallback 작동.
+3. **매니페스트 권한 설정 (`public/manifest.json`)**:
+   - `"permissions": ["activeTab", "storage"]`
+   - `"action": { "default_popup": "popup.html", "default_title": "현재 페이지를 시작화면에 추가" }`
 
 ---
 
 ## 3. 진행 절차
 1. **PRD 작성** (현재 단계 - 오직 PRD.md만 작성)
 2. **사용자 승인 확인** (대기)
-3. **`LinksHub.tsx` 포맷팅 함수 및 렌더링 구현** 
-4. **`app.css` 스타일 적용** 
-5. **단위 테스트 및 실제 브라우저 캡쳐 검증** 
+3. **`public/manifest.json` 액션 팝업 및 권한 등록** 
+4. **미니 팝업 HTML 및 스크립트(`public/popup.html`, `public/popup.js` / Vite 멀티엔트리) 구현** 
+5. **`useLocalStorage.ts`에 `chrome.storage` 양방향 동기화 지원** 
+6. **단위 테스트 및 빌드 검증** 
