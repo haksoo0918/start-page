@@ -16,7 +16,7 @@ describe('faviconHelper', () => {
     });
 
     it('should handle URL without protocol', () => {
-      expect(extractDomain('github.com/sosoFactory')).toBe('github.com');
+      expect(extractDomain('github.com/haksoo0918')).toBe('github.com');
     });
   });
 
